@@ -2,7 +2,10 @@ package com.hongri.viewpager;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -20,8 +23,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
 import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ToastUtil;
 import com.hongri.viewpager.widget.CustomImageView;
+import com.hongri.viewpager.widget.CustomImageView.ICustomMethod;
 
 /**
  * @author hongri
@@ -54,6 +59,36 @@ public class ViewPagerActivity extends AppCompatActivity {
             mImageView.setLayoutParams(mImageParams);
             mImageView.setImageResource(DataUtil.getImageResource()[i]);
 
+            Bitmap bmp;
+            if (mImageView.getDrawingCache() != null) {
+                bmp = Bitmap.createBitmap(mImageView.getDrawingCache());
+            } else {
+                bmp = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+            }
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            int screenW = this.getWindowManager().getDefaultDisplay().getWidth();
+            int screenH = this.getWindowManager().getDefaultDisplay().getHeight()
+                - statusBarHeight;
+            if (bmp != null) {
+                mImageView.imageInit(bmp, screenW, screenH, statusBarHeight,
+                    new ICustomMethod() {
+
+                        @Override
+                        public void customMethod(Boolean currentStatus) {
+                            // 当图片处于放大或缩小状态时，控制标题是否显示
+                            if (currentStatus) {
+                                //llTitle.setVisibility(View.GONE);
+                            } else {
+                                //llTitle.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+            } else {
+                ToastUtil.showToast(ViewPagerActivity.this, "图片加载失败，请稍候再试！");
+            }
+
             /**
              * 添加手势事件
              */
@@ -78,6 +113,24 @@ public class ViewPagerActivity extends AppCompatActivity {
                         ((ImageView)(dataLists.get(mCurrentPosition))).setScaleType(ScaleType.FIT_CENTER);
                     }
                     return super.onDoubleTap(e);
+                }
+
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    Logger.d("distanceX:" + distanceX + ";distanceY:" + distanceY);
+                    if (Math.abs(distanceY) > Math.abs(distanceX)) {
+                        //正在上下滑动
+                        if (distanceY > 0) {
+                            //正在向上滑动
+                            Logger.d("正在向---上---滑动");
+                        } else {
+                            //正在向下滑动
+                            Logger.d("正在向---下---滑动");
+                        }
+                    } else {
+                        //正在左右滑动
+                    }
+                    return super.onScroll(e1, e2, distanceX, distanceY);
                 }
 
                 @Override
@@ -138,5 +191,28 @@ public class ViewPagerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseDown(event);
+                break;
+            //非第一个点按下
+            case MotionEvent.ACTION_POINTER_DOWN:
+                ((CustomImageView)(dataLists.get(mCurrentPosition))).mousePointDown(event);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseMove(event);
+                break;
+            case MotionEvent.ACTION_UP:
+                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseUp();
+                break;
+
+            default:
+                break;
+        }
+        return true/*super.onTouchEvent(event)*/;
     }
 }

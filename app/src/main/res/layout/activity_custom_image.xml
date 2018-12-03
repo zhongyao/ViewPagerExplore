@@ -10,18 +10,4 @@
         android:layout_height="fill_parent"
         android:src="@drawable/icon2"/>
 
-    <LinearLayout
-        android:id="@+id/common_imageview_llTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/common_imageview_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="报告"/>
-    </LinearLayout>
-
 </RelativeLayout>

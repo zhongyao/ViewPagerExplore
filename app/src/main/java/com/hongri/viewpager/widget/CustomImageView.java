@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+import com.hongri.viewpager.util.Logger;
 
 /**
  * @author zhongyao
@@ -98,6 +99,9 @@ public class CustomImageView extends AppCompatImageView {
         imgMatrix.postScale(scale, scale);
         imgMatrix.postTranslate(subX, subY);
         this.setImageMatrix(imgMatrix);
+
+        Logger.d("contentW:" + contentW + "\n" + "contentH:" + contentH + "\n" + "topHeight:" + topHeight + "\n primaryW:"
+            + primaryW + "\n" + "primaryH:" + primaryH);
     }
 
     /**

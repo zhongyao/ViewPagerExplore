@@ -1,5 +1,7 @@
 package com.hongri.viewpager.widget;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -7,6 +9,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import com.hongri.viewpager.util.Logger;
 
@@ -100,8 +103,10 @@ public class CustomImageView extends AppCompatImageView {
         imgMatrix.postTranslate(subX, subY);
         this.setImageMatrix(imgMatrix);
 
-        Logger.d("contentW:" + contentW + "\n" + "contentH:" + contentH + "\n" + "topHeight:" + topHeight + "\n primaryW:"
-            + primaryW + "\n" + "primaryH:" + primaryH);
+        Logger.d(
+            "contentW:" + contentW + "\n" + "contentH:" + contentH + "\n" + "topHeight:" + topHeight + "\nprimaryW:"
+                + primaryW + "\n" + "primaryH:" + primaryH + "\nscaleX:" + scaleX + "\nscaleY:" + scaleY + "\nscale:"
+                + scale + "\nbigScale:" + bigScale + "\nsubX:" + subX + "\nsubY:" + subY);
     }
 
     /**
@@ -215,6 +220,52 @@ public class CustomImageView extends AppCompatImageView {
             imgMatrix.postScale(scale, scale);
             imgMatrix.postTranslate(subX, subY);
             isBig = false;
+            this.setImageMatrix(imgMatrix);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            animator.setDuration(1000);
+            animator.setInterpolator(new DecelerateInterpolator());
+            animator.setStartDelay(500);
+
+            animator.addUpdateListener(new AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float scale = ( Float ) animation.getAnimatedValue ();
+                    imgMatrix.postScale(scale, scale);
+                    //imgMatrix.postTranslate(subX, subY);
+                    isBig = false;
+                    setImageMatrix(imgMatrix);
+                }
+            });
+            animator.start();
+            //post(new Runnable() {
+            //    @Override
+            //    public void run() {
+            //        if (mStartTime == -1) {
+            //            mStartTime = System.currentTimeMillis();
+            //        } else {
+            //            long normalizedTime = (System.currentTimeMillis() - mStartTime);
+            //            normalizedTime = Math.max(Math.min(normalizedTime, 1000), 0);
+            //
+            //            deltaScale = (bigScale - scale) * (1 - interpolator.getInterpolation(normalizedTime / 1000f))
+            //                + scale;
+            //
+            //            Logger.d("deltaScale:" + deltaScale);
+            //            imgMatrix.postScale(deltaScale, deltaScale);
+            //            imgMatrix.postTranslate(subX, subY);
+            //            isBig = false;
+            //            setImageMatrix(imgMatrix);
+            //
+            //            if (deltaScale > scale){
+            //                post(this);
+            //            }else {
+            //                removeCallbacks(this);
+            //            }
+            //
+            //        }
+            //    }
+            //});
+
         } else {
             imgMatrix.postScale(bigScale, bigScale); // 在原有矩阵后乘放大倍数
 
@@ -277,9 +328,11 @@ public class CustomImageView extends AppCompatImageView {
 
             imgMatrix.postTranslate(transX, transY);
             isBig = true;
+
+            this.setImageMatrix(imgMatrix);
         }
 
-        this.setImageMatrix(imgMatrix);
+        //this.setImageMatrix(imgMatrix);
         if (mCustomMethod != null) {
             mCustomMethod.customMethod(isBig);
         }

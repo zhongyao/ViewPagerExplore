@@ -26,7 +26,7 @@ public class TestImageControlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_custom_image);
 
         imgControl = findViewById(R.id.imageControl);
@@ -48,13 +48,20 @@ public class TestImageControlActivity extends AppCompatActivity {
         }
 
         /**
+         * 状态栏高度
+         */
+        Rect frame = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+
+        /**
          * 获取屏幕的宽高
          */
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenW = dm.widthPixels;
-        //int screenH = dm.heightPixels - statusBarHeight;
-        int screenH = dm.heightPixels;
+        int screenH = dm.heightPixels - statusBarHeight;
+        //int screenH = dm.heightPixels;
 
         /**
          * 获取屏幕的真实宽高(高度+导航栏)
@@ -65,12 +72,6 @@ public class TestImageControlActivity extends AppCompatActivity {
             realScreenH = dm.heightPixels;
         }
 
-        /**
-         * 状态栏高度
-         */
-        Rect frame = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
 
         /**
          * 标题栏高度

@@ -28,6 +28,9 @@ import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 
+/**
+ * @author zhongyao
+ */
 public class PhotoView extends AppCompatImageView implements IPhotoView {
 
     private PhotoViewAttacher mAttacher;

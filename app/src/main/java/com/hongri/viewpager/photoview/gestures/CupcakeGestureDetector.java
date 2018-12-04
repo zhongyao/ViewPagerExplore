@@ -21,6 +21,9 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import com.hongri.viewpager.photoview.log.LogManager;
 
+/**
+ * @author zhongyao
+ */
 public class CupcakeGestureDetector implements GestureDetector {
 
     protected OnGestureListener mListener;

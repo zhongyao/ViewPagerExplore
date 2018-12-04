@@ -20,6 +20,9 @@ import android.content.Context;
 import android.view.MotionEvent;
 import com.hongri.viewpager.photoview.Compat;
 
+/**
+ * @author zhongyao
+ */
 @TargetApi(5)
 public class EclairGestureDetector extends CupcakeGestureDetector {
 

@@ -9,6 +9,9 @@ import android.widget.ImageView;
  * Provided default implementation of GestureDetector.OnDoubleTapListener, to be overriden with custom behavior, if needed
  * <p>&nbsp;</p>
  * To be used via {@link com.hongri.viewpager.photoview.PhotoViewAttacher#setOnDoubleTapListener(android.view.GestureDetector.OnDoubleTapListener)}
+ *
+ *
+ * @author zhongyao
  */
 public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapListener {
 
@@ -77,9 +80,9 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
             float x = ev.getX();
             float y = ev.getY();
 
-            if (scale < photoViewAttacher.getMediumScale()) {
+            /*if (scale < photoViewAttacher.getMediumScale()) {
                 photoViewAttacher.setScale(photoViewAttacher.getMediumScale(), x, y, true);
-            } else if (scale >= photoViewAttacher.getMediumScale() && scale < photoViewAttacher.getMaximumScale()) {
+            } else*/ if (/*scale >= photoViewAttacher.getMediumScale() &&*/ scale < photoViewAttacher.getMaximumScale()) {
                 photoViewAttacher.setScale(photoViewAttacher.getMaximumScale(), x, y, true);
             } else {
                 photoViewAttacher.setScale(photoViewAttacher.getMinimumScale(), x, y, true);

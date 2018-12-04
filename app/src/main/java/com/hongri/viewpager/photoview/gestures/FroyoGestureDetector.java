@@ -20,6 +20,9 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
+/**
+ * @author zhongyao
+ */
 @TargetApi(8)
 public class FroyoGestureDetector extends EclairGestureDetector {
 

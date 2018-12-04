@@ -18,6 +18,9 @@ package com.hongri.viewpager.photoview.scrollerproxy;
 import android.content.Context;
 import android.widget.Scroller;
 
+/**
+ * @author zhongyao
+ */
 public class PreGingerScroller extends ScrollerProxy {
 
     private final Scroller mScroller;
@@ -42,6 +45,7 @@ public class PreGingerScroller extends ScrollerProxy {
         mScroller.forceFinished(finished);
     }
 
+    @Override
     public boolean isFinished() {
         return mScroller.isFinished();
     }

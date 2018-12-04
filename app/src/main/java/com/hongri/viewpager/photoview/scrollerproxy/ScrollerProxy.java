@@ -19,6 +19,9 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 
+/**
+ * @author zhongyao
+ */
 public abstract class ScrollerProxy {
 
     public static ScrollerProxy getScroller(Context context) {

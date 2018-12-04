@@ -19,6 +19,9 @@ package com.hongri.viewpager.photoview.gestures;
 import android.content.Context;
 import android.os.Build;
 
+/**
+ * @author zhongyao
+ */
 public final class VersionedGestureDetector {
 
     public static GestureDetector newInstance(Context context,

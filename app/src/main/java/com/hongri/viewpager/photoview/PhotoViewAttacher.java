@@ -44,6 +44,9 @@ import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
+/**
+ * @author zhongyao
+ */
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     OnGestureListener,
     ViewTreeObserver.OnGlobalLayoutListener {

@@ -21,6 +21,9 @@ import android.os.Build.VERSION_CODES;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * @author zhongyao
+ */
 public class Compat {
 
     private static final int SIXTY_FPS_INTERVAL = 1000 / 60;

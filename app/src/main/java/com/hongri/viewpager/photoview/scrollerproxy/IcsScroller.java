@@ -18,6 +18,9 @@ package com.hongri.viewpager.photoview.scrollerproxy;
 import android.annotation.TargetApi;
 import android.content.Context;
 
+/**
+ * @author zhongyao
+ */
 @TargetApi(14)
 public class IcsScroller extends GingerScroller {
 

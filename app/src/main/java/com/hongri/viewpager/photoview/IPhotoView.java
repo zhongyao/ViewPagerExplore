@@ -22,12 +22,15 @@ import android.view.GestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * @author zhongyao
+ */
 public interface IPhotoView {
 
-    public static final float DEFAULT_MAX_SCALE = 3.0f;
-    public static final float DEFAULT_MID_SCALE = 1.75f;
-    public static final float DEFAULT_MIN_SCALE = 1.0f;
-    public static final int DEFAULT_ZOOM_DURATION = 200;
+    float DEFAULT_MAX_SCALE = 3.0f;
+    float DEFAULT_MID_SCALE = 1.75f;
+    float DEFAULT_MIN_SCALE = 1.0f;
+    int DEFAULT_ZOOM_DURATION = 200;
 
     /**
      * Returns true if the PhotoView is set to allow zooming of Photos.
@@ -160,7 +163,7 @@ public interface IPhotoView {
     @Deprecated
     void setMidScale(float midScale);
 
-    /*
+    /**
      * Sets the medium scale level. What this value represents depends on the current {@link android.widget.ImageView.ScaleType}.
      *
      * @param mediumScale medium scale preset

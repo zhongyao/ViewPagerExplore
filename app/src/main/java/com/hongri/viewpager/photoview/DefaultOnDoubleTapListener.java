@@ -8,7 +8,7 @@ import android.widget.ImageView;
 /**
  * Provided default implementation of GestureDetector.OnDoubleTapListener, to be overriden with custom behavior, if needed
  * <p>&nbsp;</p>
- * To be used via {@link uk.co.senab.photoview.PhotoViewAttacher#setOnDoubleTapListener(android.view.GestureDetector.OnDoubleTapListener)}
+ * To be used via {@link com.hongri.viewpager.photoview.PhotoViewAttacher#setOnDoubleTapListener(android.view.GestureDetector.OnDoubleTapListener)}
  */
 public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapListener {
 
@@ -34,8 +34,9 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        if (this.photoViewAttacher == null)
+        if (this.photoViewAttacher == null) {
             return false;
+        }
 
         ImageView imageView = photoViewAttacher.getImageView();
 
@@ -67,8 +68,9 @@ public class DefaultOnDoubleTapListener implements GestureDetector.OnDoubleTapLi
 
     @Override
     public boolean onDoubleTap(MotionEvent ev) {
-        if (photoViewAttacher == null)
+        if (photoViewAttacher == null) {
             return false;
+        }
 
         try {
             float scale = photoViewAttacher.getScale();

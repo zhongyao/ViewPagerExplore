@@ -23,7 +23,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDataLists.size() > 0 ? mDataLists.size() : 0;
+        return (mDataLists != null && mDataLists.size() > 0) ? mDataLists.size() : 0;
     }
 
     @Override
@@ -36,6 +36,11 @@ public class MyPagerAdapter extends PagerAdapter {
 
         container.addView(mDataLists.get(position));
         return mDataLists.get(position);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return "哈哈" + position;
     }
 
     @Override

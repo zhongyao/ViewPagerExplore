@@ -106,6 +106,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         adapter = new MyPagerAdapter(this, dataLists);
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

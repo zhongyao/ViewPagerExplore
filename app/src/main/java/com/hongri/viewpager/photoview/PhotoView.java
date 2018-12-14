@@ -21,17 +21,18 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @author zhongyao
  */
-public class PhotoView extends AppCompatImageView implements IPhotoView {
+public class PhotoView extends GifImageView implements IPhotoView {
 
     private PhotoViewAttacher mAttacher;
 
@@ -234,6 +235,11 @@ public class PhotoView extends AppCompatImageView implements IPhotoView {
     @Override
     public void setOnViewTapListener(OnViewTapListener listener) {
         mAttacher.setOnViewTapListener(listener);
+    }
+
+    @Override
+    public void setOnScrollListener(OnScrollUpDownListener listener){
+        mAttacher.setOnScrollListener(listener);
     }
 
     @Override

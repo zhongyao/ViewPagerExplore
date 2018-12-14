@@ -29,6 +29,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -39,6 +40,7 @@ import com.hongri.viewpager.photoview.gestures.OnGestureListener;
 import com.hongri.viewpager.photoview.gestures.VersionedGestureDetector;
 import com.hongri.viewpager.photoview.log.LogManager;
 import com.hongri.viewpager.photoview.scrollerproxy.ScrollerProxy;
+import com.hongri.viewpager.util.Logger;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -140,6 +142,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private OnMatrixChangedListener mMatrixChangeListener;
     private OnPhotoTapListener mPhotoTapListener;
     private OnViewTapListener mViewTapListener;
+    private OnScrollUpDownListener mScrollUpDownListener;
     private OnLongClickListener mLongClickListener;
     private OnScaleChangeListener mScaleChangeListener;
 
@@ -149,12 +152,18 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     private boolean mZoomEnabled;
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
+    final float mTouchSlop;
 
     public PhotoViewAttacher(ImageView imageView) {
         this(imageView, true);
     }
 
     public PhotoViewAttacher(ImageView imageView, boolean zoomable) {
+
+        final ViewConfiguration configuration = ViewConfiguration
+            .get(imageView.getContext());
+        mTouchSlop = configuration.getScaledTouchSlop();
+
         mImageView = new WeakReference<>(imageView);
 
         imageView.setDrawingCacheEnabled(true);
@@ -184,6 +193,45 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                     if (null != mLongClickListener) {
                         mLongClickListener.onLongClick(getImageView());
                     }
+                }
+
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    Logger.d("distanceX-----------------:" + distanceX + ";distanceY:" + distanceY);
+                    if (Math.abs(distanceY) > Math.abs(distanceX) /*&& Math.abs(distanceY) > mTouchSlop*/) {
+                        //正在上下滑动
+                        if (distanceY > 0) {
+                            //正在向上滑动
+                            //mScrollUpDownListener.onScrollUp(distanceX,distanceY);
+                            //Logger.d("----------------正在向---上---滑动");
+                        } else {
+                            //正在向下滑动
+                            //mScrollUpDownListener.onScrollDown(distanceX,distanceY);
+                            //Logger.d("-----------------正在向---下---滑动");
+                        }
+                    } else {
+                        //正在左右滑动
+                    }
+                    return super.onScroll(e1, e2, distanceX, distanceY);
+                }
+
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    LogManager.getLogger().d(LOG_TAG,
+                        "velocityX-----------------:" + velocityX + ";velocityY:" + velocityY);
+                    if (Math.abs(velocityY) > Math.abs(velocityX)) {
+                        //正在上下Fling
+                        if (velocityY < 0) {
+                            //正在向上Fling
+                            mScrollUpDownListener.onScrollUp(0, 0);
+                        } else {
+                            //正在向下Fling
+                            mScrollUpDownListener.onScrollDown(0, 0);
+                        }
+                    } else {
+                        //正在左右Fling
+                    }
+                    return super.onFling(e1, e2, velocityX, velocityY);
                 }
             });
 
@@ -261,15 +309,18 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public boolean setDisplayMatrix(Matrix finalMatrix) {
-        if (finalMatrix == null)
+        if (finalMatrix == null) {
             throw new IllegalArgumentException("Matrix cannot be null");
+        }
 
         ImageView imageView = getImageView();
-        if (null == imageView)
+        if (null == imageView) {
             return false;
+        }
 
-        if (null == imageView.getDrawable())
+        if (null == imageView.getDrawable()) {
             return false;
+        }
 
         mSuppMatrix.set(finalMatrix);
         setImageViewMatrix(getDrawMatrix());
@@ -388,8 +439,9 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
             if (mScrollEdge == EDGE_BOTH
                 || (mScrollEdge == EDGE_LEFT && dx >= 1f)
                 || (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
-                if (null != parent)
+                if (null != parent) {
                     parent.requestDisallowInterceptTouchEvent(false);
+                }
             }
         } else {
             if (null != parent) {
@@ -607,6 +659,11 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     @Override
+    public void setOnScrollListener(OnScrollUpDownListener listener){
+        mScrollUpDownListener = listener;
+    }
+
+    @Override
     public void setScale(float scale) {
         setScale(scale, false);
     }
@@ -814,8 +871,9 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public void setZoomTransitionDuration(int milliseconds) {
-        if (milliseconds < 0)
+        if (milliseconds < 0) {
             milliseconds = DEFAULT_ZOOM_DURATION;
+        }
         this.ZOOM_DURATION = milliseconds;
     }
 
@@ -1013,6 +1071,16 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
          * @param y    - where the user tapped from the top of the View.
          */
         void onViewTap(View view, float x, float y);
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when Scroll ImageView up or down
+     */
+    public interface OnScrollUpDownListener{
+
+        void onScrollUp(float distanceX, float distanceY);
+
+        void onScrollDown(float distanceX, float distanceY);
     }
 
     private class AnimatedZoomRunnable implements Runnable {

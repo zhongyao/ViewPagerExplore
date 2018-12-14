@@ -7,19 +7,20 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
-import com.hongri.viewpager.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ToastUtil;
@@ -28,6 +29,7 @@ import com.hongri.viewpager.widget.CustomPhotoView;
 
 /**
  * @author hongri
+ * 参考：https://www.jb51.net/article/106272.htm
  */
 public class ViewPagerActivity extends AppCompatActivity {
 
@@ -37,7 +39,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     private ArrayList<View> dataLists = new ArrayList<>();
     private CustomPhotoView mImageView;
     private TextView mTextView;
-    private final int IMAGE_SIZE = 3;
+    private final int IMAGE_SIZE = 5;
     private int mCurrentPosition = 0;
 
     @Override
@@ -56,6 +58,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             mImageView.setLayoutParams(mImageParams);
             mImageView.setImageResource(DataUtil.getImageResource()[i]);
+            Glide.with(this).load("").placeholder(DataUtil.getImageResource()[i]).override(800,800).into(mImageView);
             mImageView.setScaleType(ScaleType.FIT_CENTER);
             mImageView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
@@ -65,70 +68,24 @@ public class ViewPagerActivity extends AppCompatActivity {
                 }
             });
 
-            mImageView.setOnPhotoTapListener(new OnPhotoTapListener() {
+            mImageView.setOnViewTapListener(new OnViewTapListener() {
                 @Override
-                public void onPhotoTap(View view, float x, float y) {
-                    ToastUtil.showToast(ViewPagerActivity.this, "点击事件，真实项目中可关闭activity");
+                public void onViewTap(View view, float x, float y) {
+                    ToastUtil.showToast(ViewPagerActivity.this, "单击事件，点击图片之外区域也会触发");
                 }
             });
 
-            /**
-             * 添加手势事件
-             */
-            final GestureDetector gestureDetector = new GestureDetector(this, new SimpleOnGestureListener() {
+            mImageView.setOnScrollListener(new OnScrollUpDownListener() {
                 @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    ToastUtil.showToast(ViewPagerActivity.this, "图片：" + mCurrentPosition + " 单击事件");
-                    return super.onSingleTapConfirmed(e);
-                }
-
-                /**
-                 * 双击时放大/缩小图片
-                 * @param e
-                 * @return
-                 */
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-                    ToastUtil.showToast(ViewPagerActivity.this, "图片：" + mCurrentPosition + " 双击事件");
-                    if (((ImageView)(dataLists.get(mCurrentPosition))).getScaleType() != ScaleType.CENTER_CROP) {
-                        ((ImageView)(dataLists.get(mCurrentPosition))).setScaleType(ScaleType.CENTER_CROP);
-                    } else {
-                        ((ImageView)(dataLists.get(mCurrentPosition))).setScaleType(ScaleType.FIT_CENTER);
-                    }
-                    return super.onDoubleTap(e);
+                public void onScrollUp(float distanceX, float distanceY) {
+                    Logger.d("upupupupup");
                 }
 
                 @Override
-                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                    Logger.d("distanceX:" + distanceX + ";distanceY:" + distanceY);
-                    if (Math.abs(distanceY) > Math.abs(distanceX)) {
-                        //正在上下滑动
-                        if (distanceY > 0) {
-                            //正在向上滑动
-                            Logger.d("正在向---上---滑动");
-                        } else {
-                            //正在向下滑动
-                            Logger.d("正在向---下---滑动");
-                        }
-                    } else {
-                        //正在左右滑动
-                    }
-                    return super.onScroll(e1, e2, distanceX, distanceY);
-                }
-
-                @Override
-                public boolean onDoubleTapEvent(MotionEvent e) {
-                    return super.onDoubleTapEvent(e);
+                public void onScrollDown(float distanceX, float distanceY) {
+                    Logger.d("downdowndown");
                 }
             });
-
-            //mImageView.setOnTouchListener(new OnTouchListener() {
-            //    @Override
-            //    public boolean onTouch(View v, MotionEvent event) {
-            //        gestureDetector.onTouchEvent(event);
-            //        return true;
-            //    }
-            //});
 
             dataLists.add(mImageView);
         }
@@ -143,6 +100,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         mTextView.setGravity(Gravity.CENTER);
         mTextView.setTextColor(Color.GREEN);
         mTextView.setText(DataUtil.getDescriptions()[0]);
+        mTextView.setOnClickListener(new TextOnClickListener());
         indicatorContainer.addView(mTextView);
 
         adapter = new MyPagerAdapter(this, dataLists);
@@ -166,7 +124,7 @@ public class ViewPagerActivity extends AppCompatActivity {
                         ((ImageView)(dataLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
                     }
                 }
-                mTextView.setText(DataUtil.getDescriptions()[position]);
+                mTextView.setText(DataUtil.getDescriptions()[position]+"点击text保持图片");
             }
 
             @Override
@@ -196,6 +154,14 @@ public class ViewPagerActivity extends AppCompatActivity {
             default:
                 break;
         }
-        return true/*super.onTouchEvent(event)*/;
+        return true;
+    }
+
+    private class TextOnClickListener implements OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 }

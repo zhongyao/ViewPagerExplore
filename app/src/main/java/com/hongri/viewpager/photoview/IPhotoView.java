@@ -348,4 +348,10 @@ public interface IPhotoView {
      * @param onScaleChangeListener OnScaleChangeListener instance
      */
     void setOnScaleChangeListener(PhotoViewAttacher.OnScaleChangeListener onScaleChangeListener);
+
+    /**
+     * Will report back about scroll up or down
+     * @param onScrollUpDownListener
+     */
+    void setOnScrollListener(PhotoViewAttacher.OnScrollUpDownListener onScrollUpDownListener);
 }

@@ -19,6 +19,11 @@ public class MyJavascriptInterface {
         mImageUrls = imageUrls;
     }
 
+    /**
+     * 点击WebView图片时--JS调用方法
+     *
+     * @param img
+     */
     @JavascriptInterface
     public void openImage(String img) {
         Intent intent = new Intent(mContext, ViewPagerActivity.class);

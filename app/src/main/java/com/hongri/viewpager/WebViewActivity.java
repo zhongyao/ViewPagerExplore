@@ -12,14 +12,13 @@ import com.hongri.viewpager.util.DataUtil;
 
 /**
  * @author hongri
+ * 参考：https://www.jb51.net/article/106272.htm
  */
 public class WebViewActivity extends AppCompatActivity {
 
     private WebView webView;
     private WebSettings webSettings;
     private final String URL = "https://www.toutiao.com/a6632089991168131591/";
-    //private final String URL
-    //    = "http://a.mp.uc.cn/article.html?uc_param_str=frdnsnpfvecpntnwprdssskt&client=ucweb&wm_aid=c51bcf6c1553481885da371a16e33dbe&wm_id=482efebe15ed4922a1f24dc42ab654e6&pagetype=share&btifl=100";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -36,20 +35,14 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private class XWebViewClient extends WebViewClient {
-        //@Override
-        //public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        //    return super.shouldOverrideUrlLoading(view, request);
-        //}
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //webSettings.setJavaScriptEnabled(true);
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            //webSettings.setJavaScriptEnabled(true);
             super.onPageFinished(view, url);
 
             //待网页加载完全后设置图片点击的监听方法

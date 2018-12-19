@@ -3,6 +3,8 @@ package com.hongri.viewpager;
 import java.util.ArrayList;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -17,19 +19,19 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
 import com.hongri.viewpager.util.Logger;
+import com.hongri.viewpager.util.ResHelper;
 import com.hongri.viewpager.util.ToastUtil;
 import com.hongri.viewpager.widget.CustomImageView;
 import com.hongri.viewpager.widget.CustomPhotoView;
 
 /**
  * @author hongri
- * 参考：https://www.jb51.net/article/106272.htm
+ *         参考：https://www.jb51.net/article/106272.htm
  */
 public class ViewPagerActivity extends AppCompatActivity {
 
@@ -54,11 +56,12 @@ public class ViewPagerActivity extends AppCompatActivity {
          * 添加图片资源
          */
         for (int i = 0; i < IMAGE_SIZE; i++) {
+
+
             mImageView = new CustomPhotoView(this);
             LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             mImageView.setLayoutParams(mImageParams);
-            mImageView.setImageResource(DataUtil.getImageResource()[i]);
-            Glide.with(this).load("").placeholder(DataUtil.getImageResource()[i]).override(800,800).into(mImageView);
+            //mImageView.setImageResource(DataUtil.getImageResource()[i]);
             mImageView.setScaleType(ScaleType.FIT_CENTER);
             mImageView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
@@ -97,11 +100,17 @@ public class ViewPagerActivity extends AppCompatActivity {
         LinearLayout.LayoutParams mTextParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT);
         mTextView.setLayoutParams(mTextParams);
-        mTextView.setGravity(Gravity.CENTER);
+        mTextView.setGravity(Gravity.BOTTOM);
         mTextView.setTextColor(Color.GREEN);
         mTextView.setText(DataUtil.getDescriptions()[0]);
         mTextView.setOnClickListener(new TextOnClickListener());
+        GradientDrawable gradientDrawable = new GradientDrawable(Orientation.TOP_BOTTOM,
+            new int[] {ResHelper.getColor(R.integer.alpha_3, R.color.default_gray),
+                ResHelper.getColor(R.integer.alpha_100, R.color.default_gray)});
         indicatorContainer.addView(mTextView);
+        indicatorContainer.setBackgroundDrawable(gradientDrawable);
+        //或使用xml文件定义
+        //indicatorContainer.setBackground(getResources().getDrawable(R.drawable.indicator_bg));
 
         adapter = new MyPagerAdapter(this, dataLists);
 
@@ -125,7 +134,7 @@ public class ViewPagerActivity extends AppCompatActivity {
                         ((ImageView)(dataLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
                     }
                 }
-                mTextView.setText(DataUtil.getDescriptions()[position]+"点击text保持图片");
+                mTextView.setText(DataUtil.getDescriptions()[position] + "点击text保持图片");
             }
 
             @Override
@@ -158,7 +167,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         return true;
     }
 
-    private class TextOnClickListener implements OnClickListener{
+    private class TextOnClickListener implements OnClickListener {
 
         @Override
         public void onClick(View v) {

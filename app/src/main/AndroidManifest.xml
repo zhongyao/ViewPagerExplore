@@ -8,6 +8,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,7 +17,11 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".ViewPagerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
 
         </activity>
         <activity android:name=".TestImageControlActivity">
@@ -24,13 +29,10 @@
         <activity android:name=".PhotoViewActivity">
         </activity>
         <activity android:name=".MatrixActivity">
+
         </activity>
         <activity android:name=".WebViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
 
         </activity>
     </application>

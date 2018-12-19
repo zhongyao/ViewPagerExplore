@@ -13,11 +13,11 @@ public class DataUtil {
 
     private static String[] descriptions = {"描述一", "描述二", "描述三", "描述四", "描述五"};
 
-    private static String[] imageUrls = {"http://b.zol-img.com.cn/desk/bizhi/image/5/1440x900/1403767981822.jpg",
-        "http://pic1.win4000.com/wallpaper/2/4fcec0bf0fb7f.jpg",
-        "http://pic3.bbzhi.com/zhiwubizhi/qingxinlvsezhiwubizhi/dong_zhiwu_165204_9.jpg",
-        "http://img2.duitang.com/uploads/item/201211/25/20121125160403_a5feK.jpeg",
-        "http://img5.duitang.com/uploads/item/201211/24/20121124225259_NSVuF.jpeg"};
+    private static String[] imageUrls = {"http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
+        "https://pre-article.xuexi.cn/test/lightProjectDemo/img/photo1.jpg",
+        "http://img.soogif.com/8iXhOare516DocAmoflxHdJAQeOeLDHl.gif",
+        "https://sf1-ttcdn-tos.pstatp.com/img/tos-cn-i-0022/43b16f00ea6141629df56505a4d0faf4~642x2356_noop.jpeg",
+        "http://img.my.csdn.net/uploads/201407/26/1406383275_3977.jpg"};
 
     public static int[] getImageResource() {
         return images;

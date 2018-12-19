@@ -6,6 +6,9 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import com.bumptech.glide.Glide;
+import com.hongri.viewpager.photoview.PhotoView;
+import com.hongri.viewpager.util.DataUtil;
 
 /**
  * @author zhongyao
@@ -33,7 +36,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
+        Glide.with(mContext).load(DataUtil.getImageUrls()[position])/*.placeholder(DataUtil.getImageResource()[i])*/.override(800, 800).into((PhotoView)mDataLists.get(position));
         container.addView(mDataLists.get(position));
         return mDataLists.get(position);
     }

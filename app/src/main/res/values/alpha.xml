@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 透明度 值为对应百分比的换算结果，例：alpha_75为255的75% -->
+    <integer name="alpha_100">255</integer>
+    <integer name="alpha_75">191</integer>
+    <integer name="alpha_50">128</integer>
+    <integer name="alpha_25">64</integer>
+    <integer name="alpha_15">38</integer>
+    <integer name="alpha_10">25</integer>
+    <integer name="alpha_3">8</integer>
+</resources>

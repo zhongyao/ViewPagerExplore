@@ -19,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ResHelper;
 import com.hongri.viewpager.util.ToastUtil;
@@ -33,7 +35,7 @@ import com.hongri.viewpager.widget.CustomPhotoView;
  * @author hongri
  *         参考：https://www.jb51.net/article/106272.htm
  */
-public class ViewPagerActivity extends AppCompatActivity {
+public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveCallBack {
 
     private ViewPager viewPager;
     private MyPagerAdapter adapter;
@@ -56,13 +58,15 @@ public class ViewPagerActivity extends AppCompatActivity {
          * 添加图片资源
          */
         for (int i = 0; i < IMAGE_SIZE; i++) {
-
-
             mImageView = new CustomPhotoView(this);
             LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             mImageView.setLayoutParams(mImageParams);
-            //mImageView.setImageResource(DataUtil.getImageResource()[i]);
-            mImageView.setScaleType(ScaleType.FIT_CENTER);
+            mImageView.setImageResource(DataUtil.getImageResource()[i]);
+            if (i == 2) {
+                mImageView.setScaleType(ScaleType.CENTER_CROP);
+            } else {
+                mImageView.setScaleType(ScaleType.FIT_CENTER);
+            }
             mImageView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -97,10 +101,11 @@ public class ViewPagerActivity extends AppCompatActivity {
          * 添加描述文案
          */
         mTextView = new TextView(this);
-        LinearLayout.LayoutParams mTextParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+        final LinearLayout.LayoutParams mTextParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT);
+        mTextParams.gravity = Gravity.BOTTOM;
         mTextView.setLayoutParams(mTextParams);
-        mTextView.setGravity(Gravity.BOTTOM);
+        mTextView.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         mTextView.setTextColor(Color.GREEN);
         mTextView.setText(DataUtil.getDescriptions()[0]);
         mTextView.setOnClickListener(new TextOnClickListener());
@@ -134,7 +139,7 @@ public class ViewPagerActivity extends AppCompatActivity {
                         ((ImageView)(dataLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
                     }
                 }
-                mTextView.setText(DataUtil.getDescriptions()[position] + "点击text保持图片");
+                mTextView.setText(DataUtil.getDescriptions()[position] + " 点击text保持图片");
             }
 
             @Override
@@ -167,11 +172,24 @@ public class ViewPagerActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void savePhotoSuccess() {
+        ToastUtil.showToast(this, "保持成功");
+    }
+
+    @Override
+    public void savePhotoFailure() {
+        ToastUtil.showToast(this, "保存失败");
+    }
+
     private class TextOnClickListener implements OnClickListener {
 
         @Override
         public void onClick(View v) {
-
+            ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
+                mCurrentPosition))
+                .getDrawable()), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
         }
     }
+
 }

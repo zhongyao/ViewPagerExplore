@@ -15,8 +15,8 @@ public class DataUtil {
 
     private static String[] imageUrls = {"http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
         "https://pre-article.xuexi.cn/test/lightProjectDemo/img/photo1.jpg",
+        "https://p3-tt.bytecdn.cn/img/tos-cn-i-0022/2ce694b57a164e7dbd1abcd5a093aa8f~810x11237_noop.jpeg",
         "http://img.soogif.com/8iXhOare516DocAmoflxHdJAQeOeLDHl.gif",
-        "https://sf1-ttcdn-tos.pstatp.com/img/tos-cn-i-0022/43b16f00ea6141629df56505a4d0faf4~642x2356_noop.jpeg",
         "http://img.my.csdn.net/uploads/201407/26/1406383275_3977.jpg"};
 
     public static int[] getImageResource() {

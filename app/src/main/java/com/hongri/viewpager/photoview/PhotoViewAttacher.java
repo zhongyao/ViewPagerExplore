@@ -948,8 +948,11 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         } else if (mScaleType == ScaleType.CENTER_CROP) {
             float scale = Math.max(widthScale, heightScale);
             mBaseMatrix.postScale(scale, scale);
+            //TODO
+            //mBaseMatrix.postTranslate((viewWidth - drawableWidth * scale) / 2F,
+            //    (viewHeight - drawableHeight * scale) / 2F);
             mBaseMatrix.postTranslate((viewWidth - drawableWidth * scale) / 2F,
-                (viewHeight - drawableHeight * scale) / 2F);
+                0);
 
         } else if (mScaleType == ScaleType.CENTER_INSIDE) {
             float scale = Math.min(1.0f, Math.min(widthScale, heightScale));

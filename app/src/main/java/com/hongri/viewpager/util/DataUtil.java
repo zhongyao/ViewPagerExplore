@@ -13,6 +13,9 @@ public class DataUtil {
 
     private static String[] descriptions = {"描述一", "描述二", "描述三", "描述四", "描述五"};
 
+    /**
+     * 默认第四张gif图
+     */
     private static String[] imageUrls = {"http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
         "https://pre-article.xuexi.cn/test/lightProjectDemo/img/photo1.jpg",
         "https://p3-tt.bytecdn.cn/img/tos-cn-i-0022/2ce694b57a164e7dbd1abcd5a093aa8f~810x11237_noop.jpeg",

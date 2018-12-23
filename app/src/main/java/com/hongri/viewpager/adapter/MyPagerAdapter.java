@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.hongri.viewpager.photoview.PhotoView;
 import com.hongri.viewpager.util.DataUtil;
 import com.hongri.viewpager.util.HttpUtil;
+import com.hongri.viewpager.widget.CustomPhotoView;
 
 import static com.hongri.viewpager.util.DataUtil.getImageUrls;
 
@@ -43,7 +44,7 @@ public class MyPagerAdapter extends PagerAdapter {
         // Glide.with(mContext).load(DataUtil.getImageUrls()[position]).placeholder(R.drawable.ic_launcher_background).override(800, 800).into((PhotoView)mDataLists.get(position));
         //方式二：使用地方开源库android-gif-drawable 用普通的下载方式，通过输入流等方式创建GifDrawable
         if (position == 3){
-            HttpUtil.DownLoadImage(position, getImageUrls()[position],(PhotoView)mDataLists.get(position));
+            HttpUtil.DownLoadImage(position, getImageUrls()[position],(CustomPhotoView)mDataLists.get(position));
         }else {
             Glide.with(mContext).load(DataUtil.getImageUrls()[position]).into((PhotoView)mDataLists.get(position));
         }

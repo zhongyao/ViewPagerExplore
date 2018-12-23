@@ -1,13 +1,20 @@
 package com.hongri.viewpager;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
-public class ImageScaleTypeActivity extends AppCompatActivity {
+public class ImageActivity extends AppCompatActivity {
 
     private ImageView image_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +24,55 @@ public class ImageScaleTypeActivity extends AppCompatActivity {
 
         image_view.setImageResource(R.drawable.long_image);
 
+        /**
+         * ImageView相关ScaleType测试
+         */
+        imageScaleType();
+
+        /**
+         * Bitmap & Drawable
+         */
+        bitmapAndDrawable();
+    }
+
+    private void bitmapAndDrawable() {
+        /**
+         * 将Drawable转为Bitmap
+         */
+        Bitmap bitmap = drawableToBitmap(image_view.getDrawable());
+
+        /**
+         * 将Bitmap转为Drawable
+         */
+        Drawable drawable = bitmapToDrawable();
+
+    }
+
+    private Drawable bitmapToDrawable() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+        return bitmapDrawable;
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        //获取Drawable的w、h
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+
+        //获取Drawable的颜色格式
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Config.ARGB_8888 : Config.RGB_565;
+        //建立对应的bitmap
+        Bitmap bmp = Bitmap.createBitmap(w, h, config);
+
+        //建立对应的Bitmap的画布
+        Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, w, h);
+
+        drawable.draw(canvas);
+        return bmp;
+    }
+
+    private void imageScaleType() {
         /**
          * 1、以FIT开头的会使用缩放
          */
@@ -36,14 +92,13 @@ public class ImageScaleTypeActivity extends AppCompatActivity {
         //会展示图片的中心部分。如果图片的大小小于控件的宽高，那么图片会被居中显示
         //image_view.setScaleType(ScaleType.CENTER) ;
         //图片会被等比缩放到完全填充整个控件，并居中展示（常用）。
-        image_view.setScaleType(ScaleType.CENTER_CROP);
+        //image_view.setScaleType(ScaleType.CENTER_CROP);
         //以完全展示图片内容为目的，图片将被等比缩放到能够完全展示在控件中，并居中展示；如果图片的大小小于控件大小，那么就直接居中展示该图片。
         //image_view.setScaleType(ScaleType.CENTER_INSIDE);
 
         /**
          * 3、MATRIX 矩阵
          */
-
 
     }
 }

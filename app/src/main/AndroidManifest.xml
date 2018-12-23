@@ -37,7 +37,7 @@
         </activity>
         <activity android:name=".WebViewActivity">
         </activity>
-        <activity android:name=".ImageScaleTypeActivity">
+        <activity android:name=".ImageActivity">
         </activity>
     </application>
 

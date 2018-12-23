@@ -8,7 +8,7 @@ import java.net.URL;
 
 import android.os.Handler;
 import android.os.Message;
-import com.hongri.viewpager.photoview.PhotoView;
+import com.hongri.viewpager.widget.CustomPhotoView;
 import pl.droidsonroids.gif.GifDrawable;
 
 /**
@@ -19,10 +19,10 @@ import pl.droidsonroids.gif.GifDrawable;
 public class HttpUtil {
 
     private static String mUrl;
-    private static PhotoView mPhotoView;
+    private static CustomPhotoView mPhotoView;
     private static final int SUCCESS = 1;
 
-    public static void DownLoadImage(int position, String url, PhotoView photoView) {
+    public static void DownLoadImage(int position, String url, CustomPhotoView photoView) {
         mUrl = url;
         mPhotoView = photoView;
         new Thread(saveFileRunnable).start();
@@ -37,6 +37,8 @@ public class HttpUtil {
                         byte[] bytes = (byte[])msg.obj;
                         GifDrawable drawable = new GifDrawable(bytes);
                         mPhotoView.setImageDrawable(drawable);
+
+                        mPhotoView.setBytes(bytes);
                     } catch (IOException e) {
                         Logger.d("HttpUtil:" + e);
                         e.printStackTrace();

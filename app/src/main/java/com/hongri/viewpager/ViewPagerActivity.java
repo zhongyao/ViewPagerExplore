@@ -186,9 +186,16 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
         @Override
         public void onClick(View v) {
-            ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
-                mCurrentPosition))
-                .getDrawable()), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+
+            if (mCurrentPosition != 3) {
+                ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
+                    mCurrentPosition))
+                    .getDrawable()), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+            } else {
+                ImageUtil.saveGif2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
+                    mCurrentPosition))
+                    .getDrawable()),((CustomPhotoView)dataLists.get(mCurrentPosition)).getBytes(), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+            }
         }
     }
 

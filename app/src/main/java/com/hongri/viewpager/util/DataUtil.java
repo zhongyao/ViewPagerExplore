@@ -5,6 +5,8 @@ import com.hongri.viewpager.R;
 /**
  * @author zhongyao
  * @date 2018/12/2
+ *
+ * 地图：https://upload.wikimedia.org/wikipedia/commons/3/33/Physical_Political_World_Map.jpg
  */
 
 public class DataUtil {

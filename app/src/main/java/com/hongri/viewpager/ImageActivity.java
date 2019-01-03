@@ -1,5 +1,8 @@
 package com.hongri.viewpager;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -10,10 +13,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import com.hongri.viewpager.util.BitmapUtil;
+import com.hongri.viewpager.util.Logger;
+import com.hongri.viewpager.widget.BigImageView;
 
 public class ImageActivity extends AppCompatActivity {
 
     private ImageView image_view;
+    private BigImageView bigImageView;
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,11 @@ public class ImageActivity extends AppCompatActivity {
         image_view.setImageResource(R.drawable.long_image);
 
         /**
+         * 使用BitmapRegionDecoder展示长图
+         */
+        displayBigImage();
+
+        /**
          * ImageView相关ScaleType测试
          */
         imageScaleType();
@@ -33,6 +47,27 @@ public class ImageActivity extends AppCompatActivity {
          * Bitmap & Drawable
          */
         bitmapAndDrawable();
+    }
+
+    private void displayBigImage() {
+        try {
+            int maxHeapMemory = BitmapUtil.getMaxHeapMemory(this);
+            Logger.d("maxHeapMemory:" + maxHeapMemory);
+            iv = findViewById(R.id.iv);
+            iv.setScaleType(ScaleType.CENTER_CROP);
+            bigImageView = findViewById(R.id.bigImageView);
+
+            InputStream inputStream = getResources().getAssets().open("long_image2.jpeg");
+            bigImageView.setInputStream(inputStream);
+
+            Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.long_image2, 200,
+                200);
+            iv.setImageBitmap(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void bitmapAndDrawable() {

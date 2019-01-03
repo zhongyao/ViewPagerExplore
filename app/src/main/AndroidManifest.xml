@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature android:name="android.hardware.camera"/>
@@ -24,7 +23,6 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".ViewPagerActivity">
-
         </activity>
         <activity android:name=".TestImageControlActivity">
         </activity>
@@ -35,6 +33,9 @@
         <activity android:name=".WebViewActivity">
         </activity>
         <activity android:name=".ImageActivity">
+
+        </activity>
+        <activity android:name=".SpannableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

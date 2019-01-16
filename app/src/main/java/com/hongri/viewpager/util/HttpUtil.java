@@ -86,17 +86,20 @@ public class HttpUtil {
      * 输入流转字节流
      */
     private static byte[] InputStreamToByte(InputStream is) throws IOException {
-        ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
-        int ch;
+        int length;
+        byte[] data;
         /**
          *
          * */
-        while ((ch = is.read(buffer)) != -1) {
-            bytestream.write(buffer, 0, ch);
+        Logger.d("is.available:" + is.available());
+        while ((length = is.read(buffer)) != -1) {
+            Logger.d("length:" + length + " buffer:" + buffer.length);
+            bos.write(buffer, 0, length);
         }
-        byte data[] = bytestream.toByteArray();
-        bytestream.close();
+        data = bos.toByteArray();
+        bos.close();
         return data;
     }
 }

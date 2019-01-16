@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import com.hongri.viewpager.util.BitmapUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.widget.BigImageView;
@@ -54,14 +53,34 @@ public class ImageActivity extends AppCompatActivity {
             int maxHeapMemory = BitmapUtil.getMaxHeapMemory(this);
             Logger.d("maxHeapMemory:" + maxHeapMemory);
             iv = findViewById(R.id.iv);
-            iv.setScaleType(ScaleType.CENTER_CROP);
+            //iv.setScaleType(ScaleType.CENTER_CROP);
             bigImageView = findViewById(R.id.bigImageView);
 
-            InputStream inputStream = getResources().getAssets().open("long_image2.jpeg");
+            InputStream inputStream = getResources().getAssets().open("comic.jpeg");
             bigImageView.setInputStream(inputStream);
 
-            Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.long_image2, 200,
-                200);
+            //Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.comic, 1920/2,
+            //    1080/2);
+
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.comic);
+            //bitmap = BitmapUtil.pressBimmapInQuality(bitmap);
+
+            //Bitmap bitmap = BitmapUtil.pressBitmapInSampleSize(getResources(), R.drawable.comic, 200, 200);
+            //iv.setImageBitmap(bitmap);
+
+            //方法3
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.comic);
+            //bitmap = BitmapUtil.pressBitmapInScale(bitmap, 0.5f, 0.5f);
+            //iv.setImageBitmap(bitmap);
+
+            //方法4
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.comic);
+            //bitmap = BitmapUtil.pressBitmapInRGB(bitmap, getResources(), R.drawable.comic);
+
+            //方法5
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.comic);
+            bitmap = BitmapUtil.pressBitmapInScaledBitmap(bitmap);
+
             iv.setImageBitmap(bitmap);
 
         } catch (IOException e) {

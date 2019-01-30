@@ -402,7 +402,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public float getScale() {
-        return (float) Math.sqrt((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float) Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
+        return (float)Math.sqrt((float)Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float)Math
+            .pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
     }
 
     @Override
@@ -462,7 +463,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         ImageView imageView = getImageView();
         mCurrentFlingRunnable = new FlingRunnable(imageView.getContext());
         mCurrentFlingRunnable.fling(getImageViewWidth(imageView),
-            getImageViewHeight(imageView), (int) velocityX, (int) velocityY);
+            getImageViewHeight(imageView), (int)velocityX, (int)velocityY);
         imageView.post(mCurrentFlingRunnable);
     }
 
@@ -524,7 +525,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     public boolean onTouch(View v, MotionEvent ev) {
         boolean handled = false;
 
-        if (mZoomEnabled && hasDrawable((ImageView) v)) {
+        if (mZoomEnabled && hasDrawable((ImageView)v)) {
             ViewParent parent = v.getParent();
             switch (ev.getAction()) {
                 case ACTION_DOWN:
@@ -553,6 +554,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                             handled = true;
                         }
                     }
+                    break;
+                default:
                     break;
             }
 
@@ -659,7 +662,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     @Override
-    public void setOnScrollListener(OnScrollUpDownListener listener){
+    public void setOnScrollListener(OnScrollUpDownListener listener) {
         mScrollUpDownListener = listener;
     }
 
@@ -1079,7 +1082,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     /**
      * Interface definition for a callback to be invoked when Scroll ImageView up or down
      */
-    public interface OnScrollUpDownListener{
+    public interface OnScrollUpDownListener {
 
         void onScrollUp(float distanceX, float distanceY);
 

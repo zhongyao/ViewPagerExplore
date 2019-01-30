@@ -24,11 +24,11 @@ import android.view.ScaleGestureDetector;
  * @author zhongyao
  */
 @TargetApi(8)
-public class FroyoGestureDetector extends EclairGestureDetector {
+public class PhotoGestureDetector extends TouchGestureDetector {
 
     protected final ScaleGestureDetector mDetector;
 
-    public FroyoGestureDetector(Context context) {
+    public PhotoGestureDetector(Context context) {
         super(context);
         ScaleGestureDetector.OnScaleGestureListener mScaleListener = new ScaleGestureDetector.OnScaleGestureListener() {
 

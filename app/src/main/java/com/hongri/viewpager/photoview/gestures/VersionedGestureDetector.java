@@ -27,7 +27,7 @@ public final class VersionedGestureDetector {
                                               OnGestureListener listener) {
         GestureDetector detector;
 
-        detector = new FroyoGestureDetector(context);
+        detector = new PhotoGestureDetector(context);
 
         detector.setOnGestureListener(listener);
 

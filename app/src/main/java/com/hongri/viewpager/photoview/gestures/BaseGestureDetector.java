@@ -24,10 +24,10 @@ import com.hongri.viewpager.photoview.log.LogManager;
 /**
  * @author zhongyao
  */
-public class CupcakeGestureDetector implements GestureDetector {
+public class BaseGestureDetector implements GestureDetector {
 
     protected OnGestureListener mListener;
-    private static final String LOG_TAG = "CupcakeGestureDetector";
+    private static final String TAG = BaseGestureDetector.class.getSimpleName();
     float mLastTouchX;
     float mLastTouchY;
     final float mTouchSlop;
@@ -38,7 +38,7 @@ public class CupcakeGestureDetector implements GestureDetector {
         this.mListener = listener;
     }
 
-    public CupcakeGestureDetector(Context context) {
+    public BaseGestureDetector(Context context) {
         final ViewConfiguration configuration = ViewConfiguration
             .get(context);
         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
@@ -68,13 +68,14 @@ public class CupcakeGestureDetector implements GestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mVelocityTracker = VelocityTracker.obtain();
                 if (null != mVelocityTracker) {
                     mVelocityTracker.addMovement(ev);
                 } else {
-                    LogManager.getLogger().i(LOG_TAG, "Velocity tracker is null");
+                    LogManager.getLogger().i(TAG, "Velocity tracker is null");
                 }
 
                 mLastTouchX = getActiveX(ev);
@@ -144,6 +145,9 @@ public class CupcakeGestureDetector implements GestureDetector {
                 }
                 break;
             }
+
+            default:
+                break;
         }
 
         return true;

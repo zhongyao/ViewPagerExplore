@@ -19,18 +19,20 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.MotionEvent;
 import com.hongri.viewpager.photoview.Compat;
+import com.hongri.viewpager.photoview.log.LogManager;
 
 /**
  * @author zhongyao
  */
 @TargetApi(5)
-public class EclairGestureDetector extends CupcakeGestureDetector {
+public class TouchGestureDetector extends BaseGestureDetector {
 
     private static final int INVALID_POINTER_ID = -1;
     private int mActivePointerId = INVALID_POINTER_ID;
     private int mActivePointerIndex = 0;
+    private static final String TAG = TouchGestureDetector.class.getSimpleName();
 
-    public EclairGestureDetector(Context context) {
+    public TouchGestureDetector(Context context) {
         super(context);
     }
 
@@ -54,6 +56,7 @@ public class EclairGestureDetector extends CupcakeGestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -77,6 +80,8 @@ public class EclairGestureDetector extends CupcakeGestureDetector {
                     mLastTouchX = ev.getX(newPointerIndex);
                     mLastTouchY = ev.getY(newPointerIndex);
                 }
+                break;
+            default:
                 break;
         }
 

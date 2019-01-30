@@ -3,6 +3,7 @@ package com.hongri.viewpager;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -11,13 +12,14 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import com.hongri.viewpager.util.BitmapUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.widget.BigImageView;
 
-public class ImageActivity extends AppCompatActivity {
+public class ImageActivity extends Activity {
 
     private ImageView image_view;
     private BigImageView bigImageView;
@@ -26,6 +28,9 @@ public class ImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_image_scale_type);
 
         image_view = findViewById(R.id.image_view);

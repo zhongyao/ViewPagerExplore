@@ -24,7 +24,6 @@
         </activity>
         <activity android:name=".ViewPagerActivity">
 
-
         </activity>
         <activity android:name=".TestImageControlActivity">
         </activity>
@@ -35,14 +34,15 @@
         <activity android:name=".WebViewActivity">
         </activity>
         <activity android:name=".ImageActivity">
+        </activity>
+        <activity android:name=".SpannableActivity">
+        </activity>
+        <activity android:name=".BlurActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".SpannableActivity">
-
         </activity>
     </application>
 

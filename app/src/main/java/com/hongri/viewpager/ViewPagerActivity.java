@@ -34,6 +34,9 @@ import com.hongri.viewpager.widget.CustomPhotoView;
 /**
  * @author hongri
  *         参考：https://www.jb51.net/article/106272.htm
+ *
+ *         请参考大图模式：
+ *         https://github.com/davemorrissey/subsampling-scale-image-view
  */
 public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveCallBack {
 
@@ -45,10 +48,31 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     private TextView mTextView;
     private final int IMAGE_SIZE = 5;
     private int mCurrentPosition = 0;
+    private static final String TAG = ViewPagerActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String phoneInfo = "Product: " + android.os.Build.PRODUCT + "\n";
+        phoneInfo += "CPU_ABI: " + android.os.Build.CPU_ABI + "\n";
+        phoneInfo += "TAGS: " + android.os.Build.TAGS + "\n";
+        phoneInfo += "VERSION_CODES.BASE: "
+            + android.os.Build.VERSION_CODES.BASE + "\n";
+        phoneInfo += "MODEL: " + android.os.Build.MODEL + "\n";
+        phoneInfo += "SDK: " + android.os.Build.VERSION.SDK + "\n";
+        phoneInfo += "VERSION.RELEASE: " + android.os.Build.VERSION.RELEASE
+            + "\n";
+        phoneInfo += "DEVICE: " + android.os.Build.DEVICE + "\n";
+        phoneInfo += "DISPLAY: " + android.os.Build.DISPLAY + "\n";
+        phoneInfo += "BRAND: " + android.os.Build.BRAND + "\n";
+        phoneInfo += "BOARD: " + android.os.Build.BOARD + "\n";
+        phoneInfo += "FINGERPRINT: " + android.os.Build.FINGERPRINT + "\n";
+        phoneInfo += "ID: " + android.os.Build.ID + "\n";
+        phoneInfo += "MANUFACTURER: " + android.os.Build.MANUFACTURER + "\n";
+
+        Logger.d("phoneInfo:" + phoneInfo);
+
         setContentView(R.layout.activity_view_pager);
 
         viewPager = findViewById(R.id.viewPager);
@@ -194,7 +218,8 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
             } else {
                 ImageUtil.saveGif2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
                     mCurrentPosition))
-                    .getDrawable()),((CustomPhotoView)dataLists.get(mCurrentPosition)).getBytes(), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+                        .getDrawable()), ((CustomPhotoView)dataLists.get(mCurrentPosition)).getBytes(),
+                    DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
             }
         }
     }

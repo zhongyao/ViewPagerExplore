@@ -18,11 +18,11 @@ public class DataUtil {
     /**
      * 默认第四张gif图
      */
-    private static String[] imageUrls = {"http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
+    private static String[] imageUrls = {"https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=121431040,2366766377&fm=26&gp=0.jpg",
         "https://pre-article.xuexi.cn/test/lightProjectDemo/img/photo1.jpg",
         "https://p3-tt.bytecdn.cn/img/tos-cn-i-0022/2ce694b57a164e7dbd1abcd5a093aa8f~810x11237_noop.jpeg",
         "http://img.soogif.com/8iXhOare516DocAmoflxHdJAQeOeLDHl.gif",
-        "http://img.my.csdn.net/uploads/201407/26/1406383275_3977.jpg"};
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548840516050&di=d4746333f6edec1859fc750e69665104&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F1%2F59840aae0fe6a.jpg"};
 
     public static int[] getImageResource() {
         return images;

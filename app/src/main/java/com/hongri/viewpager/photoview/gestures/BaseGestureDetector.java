@@ -68,7 +68,7 @@ public class BaseGestureDetector implements GestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
+        //LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mVelocityTracker = VelocityTracker.obtain();

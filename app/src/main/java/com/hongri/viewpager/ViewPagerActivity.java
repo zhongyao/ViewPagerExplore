@@ -3,6 +3,7 @@ package com.hongri.viewpager;
 import java.util.ArrayList;
 
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
@@ -83,11 +85,12 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
          */
         for (int i = 0; i < IMAGE_SIZE; i++) {
             mImageView = new CustomPhotoView(this);
-            LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            //mImageView.setBackgroundColor(Color.GREEN);
             mImageView.setLayoutParams(mImageParams);
             mImageView.setImageResource(DataUtil.getImageResource()[i]);
             if (i == 2) {
-                mImageView.setScaleType(ScaleType.CENTER_CROP);
+                mImageView.setScaleType(ScaleType.FIT_CENTER);
             } else {
                 mImageView.setScaleType(ScaleType.FIT_CENTER);
             }
@@ -118,6 +121,12 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
                 }
             });
 
+            mImageView.setOnMatrixChangeListener(new OnMatrixChangedListener() {
+                @Override
+                public void onMatrixChanged(RectF rect) {
+                    Logger.d("onMatrixChanged---" + rect.toShortString());
+                }
+            });
             dataLists.add(mImageView);
         }
 
@@ -144,7 +153,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         adapter = new MyPagerAdapter(this, dataLists);
 
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        //viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -198,7 +207,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
     @Override
     public void savePhotoSuccess() {
-        ToastUtil.showToast(this, "保持成功");
+        ToastUtil.showToast(this, "保存成功");
     }
 
     @Override

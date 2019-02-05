@@ -19,7 +19,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.MotionEvent;
 import com.hongri.viewpager.photoview.Compat;
-import com.hongri.viewpager.photoview.log.LogManager;
 
 /**
  * @author zhongyao
@@ -56,7 +55,7 @@ public class TouchGestureDetector extends BaseGestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
+        //LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:

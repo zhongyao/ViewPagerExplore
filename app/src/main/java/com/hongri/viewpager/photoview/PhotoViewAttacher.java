@@ -40,7 +40,6 @@ import com.hongri.viewpager.photoview.gestures.OnGestureListener;
 import com.hongri.viewpager.photoview.gestures.VersionedGestureDetector;
 import com.hongri.viewpager.photoview.log.LogManager;
 import com.hongri.viewpager.photoview.scrollerproxy.ScrollerProxy;
-import com.hongri.viewpager.util.Logger;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -131,7 +130,11 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private GestureDetector mGestureDetector;
     private com.hongri.viewpager.photoview.gestures.GestureDetector mScaleDragDetector;
 
-    // These are set so we don't keep allocating them on the heap
+    /**
+     * 创建一个单位矩阵[1 0 0
+     * 0 1 0
+     * 0 0 1]
+     */
     private final Matrix mBaseMatrix = new Matrix();
     private final Matrix mDrawMatrix = new Matrix();
     private final Matrix mSuppMatrix = new Matrix();
@@ -197,7 +200,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
                 @Override
                 public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                    Logger.d("distanceX-----------------:" + distanceX + ";distanceY:" + distanceY);
+                    //Logger.d("distanceX-----------------:" + distanceX + ";distanceY:" + distanceY);
                     if (Math.abs(distanceY) > Math.abs(distanceX) /*&& Math.abs(distanceY) > mTouchSlop*/) {
                         //正在上下滑动
                         if (distanceY > 0) {
@@ -223,10 +226,14 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                         //正在上下Fling
                         if (velocityY < 0) {
                             //正在向上Fling
-                            mScrollUpDownListener.onScrollUp(0, 0);
+                            if (mScrollUpDownListener != null) {
+                                mScrollUpDownListener.onScrollUp(0, 0);
+                            }
                         } else {
                             //正在向下Fling
-                            mScrollUpDownListener.onScrollDown(0, 0);
+                            if (mScrollUpDownListener != null) {
+                                mScrollUpDownListener.onScrollDown(0, 0);
+                            }
                         }
                     } else {
                         //正在左右Fling
@@ -413,6 +420,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public void onDrag(float dx, float dy) {
+        //LogManager.getLogger().d(LOG_TAG, "onDrag--" + "dx:" + dx + "  dy:" + dy);
         if (mScaleDragDetector.isScaling()) {
             return; // Do not drag if we are already scaling
         }
@@ -747,7 +755,11 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     public Matrix getDrawMatrix() {
+        //LogManager.getLogger().d(LOG_TAG, "getDrawMatrix----2");
+        //相当于赋值：mDrawMatrix = mBaseMatrix
         mDrawMatrix.set(mBaseMatrix);
+        //相当于后乘：mDrawMatrix = mSuppMatrix * mDrawMatrix
+        LogManager.getLogger().d(LOG_TAG, "mDrawMatrix:" + mDrawMatrix + " mSuppMatrix:" + mSuppMatrix.toString());
         mDrawMatrix.postConcat(mSuppMatrix);
         return mDrawMatrix;
     }
@@ -763,9 +775,9 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
      * Helper method that simply checks the Matrix, and then displays the result
      */
     private void checkAndDisplayMatrix() {
-        if (checkMatrixBounds()) {
+        //if (checkMatrixBounds()) {
             setImageViewMatrix(getDrawMatrix());
-        }
+        //}
     }
 
     private void checkImageViewScaleType() {
@@ -790,6 +802,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         }
 
         final RectF rect = getDisplayRect(getDrawMatrix());
+        LogManager.getLogger().d(LOG_TAG, "rect----------:" + rect.toShortString());
         if (null == rect) {
             return false;
         }
@@ -841,6 +854,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         }
 
         // Finally actually translate the matrix
+        LogManager.getLogger().d(LOG_TAG, "checkMatrixBounds:" + " deltaX:" + deltaX + " deltaY:" + deltaY);
         mSuppMatrix.postTranslate(deltaX, deltaY);
         return true;
     }
@@ -859,6 +873,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
             if (null != d) {
                 mDisplayRect.set(0, 0, d.getIntrinsicWidth(),
                     d.getIntrinsicHeight());
+                //matrix 的值映射到mDisplayRect中
                 matrix.mapRect(mDisplayRect);
                 return mDisplayRect;
             }
@@ -929,6 +944,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
      * @param d - Drawable being displayed
      */
     private void updateBaseMatrix(Drawable d) {
+        LogManager.getLogger().d(LOG_TAG, "updateBaseMatrix----1");
         ImageView imageView = getImageView();
         if (null == imageView || null == d) {
             return;

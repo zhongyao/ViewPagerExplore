@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="default_white">#ffffff</color>
     <color name="default_black">#000000</color>
+    <color name="transparent">#00000000</color>
     <color name="default_gray">#191F25</color>
 </resources>

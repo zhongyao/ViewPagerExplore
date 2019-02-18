@@ -22,20 +22,21 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
         </activity>
-        <activity android:name=".ViewPagerActivity">
+        <activity
+            android:name=".ViewPagerActivity"
+            android:theme="@style/translucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
         <activity android:name=".TestImageControlActivity">
         </activity>
         <activity android:name=".PhotoViewActivity">
         </activity>
         <activity android:name=".MatrixActivity">
-
-
         </activity>
         <activity android:name=".WebViewActivity">
         </activity>
@@ -44,6 +45,9 @@
         <activity android:name=".SpannableActivity">
         </activity>
         <activity android:name=".BlurActivity">
+        </activity>
+        <activity android:name=".GestureActivity">
+
         </activity>
     </application>
 

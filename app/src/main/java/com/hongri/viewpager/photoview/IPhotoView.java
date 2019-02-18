@@ -21,6 +21,7 @@ import android.graphics.RectF;
 import android.view.GestureDetector;
 import android.view.View;
 import android.widget.ImageView;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;
 
 /**
  * @author zhongyao
@@ -353,5 +354,5 @@ public interface IPhotoView {
      * Will report back about scroll up or down
      * @param onScrollUpDownListener
      */
-    void setOnScrollListener(PhotoViewAttacher.OnScrollUpDownListener onScrollUpDownListener);
+    void setOnScrollListener(OnScrollListener onScrollUpDownListener);
 }

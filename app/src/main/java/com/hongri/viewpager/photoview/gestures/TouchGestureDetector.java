@@ -55,7 +55,10 @@ public class TouchGestureDetector extends BaseGestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        //LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
+        /**
+         * 一般来说，getAction() & ACTION_POINTER_INDEX_MASK就获得了pointer的id,等同于getActionIndex函数;
+         * getAction()& ACTION_MASK就获得了pointer的事件类型，等同于getActionMasked函数。
+         */
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -65,6 +68,9 @@ public class TouchGestureDetector extends BaseGestureDetector {
             case MotionEvent.ACTION_UP:
                 mActivePointerId = INVALID_POINTER_ID;
                 break;
+            /**
+             * 在多个触摸点存在的情况下，一个触摸点离开了屏幕
+             */
             case MotionEvent.ACTION_POINTER_UP:
                 // Ignore deprecation, ACTION_POINTER_ID_MASK and
                 // ACTION_POINTER_ID_SHIFT has same value and are deprecated

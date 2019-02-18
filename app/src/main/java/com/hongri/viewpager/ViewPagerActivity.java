@@ -23,9 +23,10 @@ import android.widget.TextView;
 import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.util.DisplayUtil;
 import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ResHelper;
@@ -55,6 +56,11 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
 
         String phoneInfo = "Product: " + android.os.Build.PRODUCT + "\n";
         phoneInfo += "CPU_ABI: " + android.os.Build.CPU_ABI + "\n";
@@ -86,47 +92,26 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         for (int i = 0; i < IMAGE_SIZE; i++) {
             mImageView = new CustomPhotoView(this);
             LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            //mImageView.setBackgroundColor(Color.GREEN);
             mImageView.setLayoutParams(mImageParams);
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setColor(Color.BLACK);
+            drawable.setAlpha(255);
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            mImageView.setBackground(drawable);
             mImageView.setImageResource(DataUtil.getImageResource()[i]);
             if (i == 2) {
                 mImageView.setScaleType(ScaleType.FIT_CENTER);
             } else {
                 mImageView.setScaleType(ScaleType.FIT_CENTER);
             }
-            mImageView.setOnLongClickListener(new OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    ToastUtil.showToast(ViewPagerActivity.this, "长按事件");
-                    return true;
-                }
-            });
+            mImageView.setOnLongClickListener(new PhotoOnLongClickListener());
 
-            mImageView.setOnViewTapListener(new OnViewTapListener() {
-                @Override
-                public void onViewTap(View view, float x, float y) {
-                    ToastUtil.showToast(ViewPagerActivity.this, "单击事件，点击图片之外区域也会触发");
-                }
-            });
+            mImageView.setOnViewTapListener(new PhotoOnViewTapListener());
 
-            mImageView.setOnScrollListener(new OnScrollUpDownListener() {
-                @Override
-                public void onScrollUp(float distanceX, float distanceY) {
-                    Logger.d("upupupupup");
-                }
+            mImageView.setOnScrollListener(new PhotoOnScrollListener());
 
-                @Override
-                public void onScrollDown(float distanceX, float distanceY) {
-                    Logger.d("downdowndown");
-                }
-            });
+            mImageView.setOnMatrixChangeListener(new PhotoOnMatrixChangedListener());
 
-            mImageView.setOnMatrixChangeListener(new OnMatrixChangedListener() {
-                @Override
-                public void onMatrixChanged(RectF rect) {
-                    Logger.d("onMatrixChanged---" + rect.toShortString());
-                }
-            });
             dataLists.add(mImageView);
         }
 
@@ -167,12 +152,23 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
             @Override
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
+                CustomPhotoView mImageView = (CustomPhotoView)dataLists.get(position);
                 for (int i = 0; i < dataLists.size(); i++) {
                     if (((ImageView)(dataLists.get(i))).getScaleType() != ScaleType.FIT_CENTER) {
                         ((ImageView)(dataLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
                     }
                 }
+                mImageView.setOnLongClickListener(new PhotoOnLongClickListener());
+
+                mImageView.setOnViewTapListener(new PhotoOnViewTapListener());
+
+                mImageView.setOnScrollListener(new PhotoOnScrollListener());
+
+                mImageView.setOnMatrixChangeListener(new PhotoOnMatrixChangedListener());
+
                 mTextView.setText(DataUtil.getDescriptions()[position] + " 点击text保持图片");
+
+
             }
 
             @Override
@@ -233,4 +229,61 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         }
     }
 
+    private class PhotoOnLongClickListener implements OnLongClickListener {
+
+        @Override
+        public boolean onLongClick(View v) {
+            ToastUtil.showToast(ViewPagerActivity.this, "长按事件");
+            return true;
+        }
+    }
+
+    private class PhotoOnViewTapListener implements OnViewTapListener {
+        @Override
+        public void onViewTap(View view, float x, float y) {
+            ToastUtil.showToast(ViewPagerActivity.this, "单击事件，点击图片之外区域也会触发");
+            finish();
+        }
+    }
+
+    private class PhotoOnScrollListener implements OnScrollListener {
+        @Override
+        public void onScrollUp(float distanceX, float distanceY) {
+            Logger.d("upupupupup");
+        }
+
+        @Override
+        public void onScrollDown(float distanceX, float distanceY) {
+            Logger.d("downdowndown");
+        }
+
+        @Override
+        public void onScrollExit() {
+            Logger.d("onScrollExit");
+            finish();
+        }
+    }
+
+    private class PhotoOnMatrixChangedListener implements OnMatrixChangedListener{
+        @Override
+        public void onMatrixChanged(RectF rect) {
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        initDeviceInfo(this);
+    }
+
+    private void initDeviceInfo(ViewPagerActivity activity) {
+        /**
+         * 双击大长图没有撑满屏幕问题总结：
+         * 1、在Demo中用不同方法获取的获取的高度一样。
+         * 2、在应用中MOTO通过getResources方法获取的高度是2272 而通过其他方法获取的高度为2368
+         *    而华为mate9 pro手机获取的宽高正常
+         */
+        DisplayUtil.getPhoneInfo(activity,MyApplication.appContext);
+    }
 }

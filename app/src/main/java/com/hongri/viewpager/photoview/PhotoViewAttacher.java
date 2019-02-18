@@ -24,7 +24,6 @@ import android.graphics.Matrix;
 import android.graphics.Matrix.ScaleToFit;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,10 +53,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     private static final String LOG_TAG = "PhotoViewAttacher";
 
-    // let debug flag be dynamic, but still Proguard can be used to remove from
-    // release builds
-    private static final boolean DEBUG = Log.isLoggable(LOG_TAG, Log.DEBUG);
-
     static final Interpolator sInterpolator = new AccelerateDecelerateInterpolator();
     int ZOOM_DURATION = DEFAULT_ZOOM_DURATION;
 
@@ -69,6 +64,19 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private float mMinScale = DEFAULT_MIN_SCALE;
     private float mMidScale = DEFAULT_MID_SCALE;
     private float mMaxScale = DEFAULT_MAX_SCALE;
+
+    /**
+     * 手机屏幕高度
+     */
+    public static final float SCREEM_HEIGHT = 2560f;
+    /**
+     * 拖动图片退出window的最小拖动距离
+     */
+    private final float MINIMUM_QUIT_DISTANCE = 500f;
+    /**
+     * 松开拖动的图片后，图片回弹或者退出，此时图片背景alpha变化所需时间
+     */
+    public static final long ALPHA_CHANGE_TIME = 300;
 
     private boolean mAllowParentInterceptOnEdge = true;
     private boolean mBlockParentIntercept = false;
@@ -126,7 +134,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     private WeakReference<ImageView> mImageView;
 
-    // Gesture Detectors
     private GestureDetector mGestureDetector;
     private com.hongri.viewpager.photoview.gestures.GestureDetector mScaleDragDetector;
 
@@ -145,7 +152,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private OnMatrixChangedListener mMatrixChangeListener;
     private OnPhotoTapListener mPhotoTapListener;
     private OnViewTapListener mViewTapListener;
-    private OnScrollUpDownListener mScrollUpDownListener;
+    private OnScrollListener mScrollListener;
     private OnLongClickListener mLongClickListener;
     private OnScaleChangeListener mScaleChangeListener;
 
@@ -200,17 +207,12 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
                 @Override
                 public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                    //Logger.d("distanceX-----------------:" + distanceX + ";distanceY:" + distanceY);
-                    if (Math.abs(distanceY) > Math.abs(distanceX) /*&& Math.abs(distanceY) > mTouchSlop*/) {
+                    if (Math.abs(distanceY) > Math.abs(distanceX)) {
                         //正在上下滑动
                         if (distanceY > 0) {
                             //正在向上滑动
-                            //mScrollUpDownListener.onScrollUp(distanceX,distanceY);
-                            //Logger.d("----------------正在向---上---滑动");
                         } else {
                             //正在向下滑动
-                            //mScrollUpDownListener.onScrollDown(distanceX,distanceY);
-                            //Logger.d("-----------------正在向---下---滑动");
                         }
                     } else {
                         //正在左右滑动
@@ -220,20 +222,12 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
                 @Override
                 public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                    LogManager.getLogger().d(LOG_TAG,
-                        "velocityX-----------------:" + velocityX + ";velocityY:" + velocityY);
                     if (Math.abs(velocityY) > Math.abs(velocityX)) {
                         //正在上下Fling
                         if (velocityY < 0) {
                             //正在向上Fling
-                            if (mScrollUpDownListener != null) {
-                                mScrollUpDownListener.onScrollUp(0, 0);
-                            }
                         } else {
                             //正在向下Fling
-                            if (mScrollUpDownListener != null) {
-                                mScrollUpDownListener.onScrollDown(0, 0);
-                            }
                         }
                     } else {
                         //正在左右Fling
@@ -367,8 +361,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         // If we don't have an ImageView, call cleanup()
         if (null == imageView) {
             cleanup();
-            LogManager.getLogger().i(LOG_TAG,
-                "ImageView no longer exists. You should not use this PhotoViewAttacher any more.");
         }
 
         return imageView;
@@ -418,20 +410,39 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         return mScaleType;
     }
 
-    @Override
-    public void onDrag(float dx, float dy) {
-        //LogManager.getLogger().d(LOG_TAG, "onDrag--" + "dx:" + dx + "  dy:" + dy);
-        if (mScaleDragDetector.isScaling()) {
-            return; // Do not drag if we are already scaling
-        }
+    float ddx, ddy;
+    boolean flag;
 
-        if (DEBUG) {
-            LogManager.getLogger().d(LOG_TAG,
-                String.format("onDrag: dx: %.2f. dy: %.2f", dx, dy));
+    @Override
+    public void onDrag(float mDraggedDistanceY, float dx, float dy) {
+        if (mScaleDragDetector.isScaling()) {
+            return;
         }
 
         ImageView imageView = getImageView();
+
+        /**
+         * 如果是未缩放状态，且在Y轴拖动，那么alpha值随着拖动逐渐变化
+         */
+        if (getScale() == getMinimumScale()) {
+            if (Math.abs(dy) > 2 * Math.abs(dx)) {
+                if (imageView.getBackground() != null) {
+                    int alphaValue = 255 - (int)((mDraggedDistanceY / SCREEM_HEIGHT) * 255 > 255 ? 255
+                        : (mDraggedDistanceY / SCREEM_HEIGHT) * 255);
+                    imageView.getBackground().setAlpha(alphaValue);
+                }
+                flag = true;
+            }else if (Math.abs(dx) > 2 * Math.abs(dy)){
+                dy = 0;
+            }
+        } else {
+            flag = false;
+        }
+
+        //ddx = Math.abs(dx);
+        //ddy = Math.abs(dy);
         mSuppMatrix.postTranslate(dx, dy);
+        LogManager.getLogger().d(LOG_TAG, "dx----" + dx + "::::dy-----" + dy);
         checkAndDisplayMatrix();
 
         /**
@@ -449,6 +460,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                 || (mScrollEdge == EDGE_LEFT && dx >= 1f)
                 || (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
                 if (null != parent) {
+                    //准许父类拦截此事件
                     parent.requestDisallowInterceptTouchEvent(false);
                 }
             }
@@ -460,14 +472,98 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     @Override
+    public void onDragRelease(boolean willExit, float mDragDistance, float dx) {
+        if (mScaleDragDetector.isScaling()) {
+            return;
+        }
+
+        if (getScale() == getMinimumScale()) {
+            ImageView imageView = getImageView();
+            imageView.post(new SmoothScrollToOriginalRunnable(willExit, mDragDistance, dx, imageView));
+        }
+    }
+
+    private float dy;
+
+    class SmoothScrollToOriginalRunnable implements Runnable {
+
+        private ImageView mImageView;
+        private float dx, mDragDistance, mTransDistance;
+        private float mLastTransDistance;
+        private long mStartTime = -1;
+        private AccelerateDecelerateInterpolator mInterpolator;
+        private boolean willQuit;
+
+        public SmoothScrollToOriginalRunnable(boolean willQuit, float mDragDistance, float dx, ImageView imageView) {
+            mImageView = imageView;
+            this.willQuit = willQuit;
+            this.mDragDistance = mDragDistance;
+            this.dx = dx;
+            mInterpolator = new AccelerateDecelerateInterpolator();
+        }
+
+        @Override
+        public void run() {
+            if (mStartTime == -1) {
+                mStartTime = System.currentTimeMillis();
+            }
+
+            float normalizedTime = Math.min(System.currentTimeMillis() - mStartTime, ALPHA_CHANGE_TIME);
+            mTransDistance = mDragDistance * mInterpolator.getInterpolation(normalizedTime / ALPHA_CHANGE_TIME);
+            dy = mTransDistance - mLastTransDistance;
+
+            mImageView.post(SmoothScrollToOriginalRunnable.this);
+            if (normalizedTime == ALPHA_CHANGE_TIME) {
+                mImageView.removeCallbacks(SmoothScrollToOriginalRunnable.this);
+                if (Math.abs(mDragDistance) > MINIMUM_QUIT_DISTANCE) {
+                    onExit();
+                }
+            }
+
+            if (mImageView.getBackground() != null) {
+                int alphaValue = (int)((Math.abs(mDragDistance) - Math.abs(mTransDistance)) / SCREEM_HEIGHT * 255) > 255
+                    ? 255 : (int)((Math.abs(mDragDistance) - Math.abs(mTransDistance))
+                    / SCREEM_HEIGHT * 255);
+                if (willQuit) {
+                    mImageView.getBackground().setAlpha(alphaValue);
+                } else {
+                    mImageView.getBackground().setAlpha(255 - alphaValue);
+                }
+            }
+            mSuppMatrix.postTranslate(dx, dy);
+            checkAndDisplayMatrix();
+            mLastTransDistance = mTransDistance;
+            /**
+             * Here we decide whether to let the ImageView's parent to start taking
+             * over the touch event.
+             *
+             * First we check whether this function is enabled. We never want the
+             * parent to take over if we're scaling. We then check the edge we're
+             * on, and the direction of the scroll (i.e. if we're pulling against
+             * the edge, aka 'overscrolling', let the parent take over).
+             */
+            ViewParent parent = mImageView.getParent();
+            if (mAllowParentInterceptOnEdge && !mScaleDragDetector.isScaling() && !mBlockParentIntercept) {
+                if (mScrollEdge == EDGE_BOTH
+                    || (mScrollEdge == EDGE_LEFT && dx >= 1f)
+                    || (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
+                    if (null != parent) {
+                        //准许父类拦截此事件
+                        parent.requestDisallowInterceptTouchEvent(false);
+                    }
+                }
+            } else {
+                if (null != parent) {
+                    parent.requestDisallowInterceptTouchEvent(true);
+                }
+            }
+
+        }
+    }
+
+    @Override
     public void onFling(float startX, float startY, float velocityX,
                         float velocityY) {
-        if (DEBUG) {
-            LogManager.getLogger().d(
-                LOG_TAG,
-                "onFling. sX: " + startX + " sY: " + startY + " Vx: "
-                    + velocityX + " Vy: " + velocityY);
-        }
         ImageView imageView = getImageView();
         mCurrentFlingRunnable = new FlingRunnable(imageView.getContext());
         mCurrentFlingRunnable.fling(getImageViewWidth(imageView),
@@ -512,19 +608,19 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public void onScale(float scaleFactor, float focusX, float focusY) {
-        if (DEBUG) {
-            LogManager.getLogger().d(
-                LOG_TAG,
-                String.format("onScale: scale: %.2f. fX: %.2f. fY: %.2f",
-                    scaleFactor, focusX, focusY));
-        }
-
         if (getScale() < mMaxScale || scaleFactor < 1f) {
             if (null != mScaleChangeListener) {
                 mScaleChangeListener.onScaleChange(scaleFactor, focusX, focusY);
             }
             mSuppMatrix.postScale(scaleFactor, scaleFactor, focusX, focusY);
             checkAndDisplayMatrix();
+        }
+    }
+
+    @Override
+    public void onExit() {
+        if (mScrollListener != null) {
+            mScrollListener.onScrollExit();
         }
     }
 
@@ -670,8 +766,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     @Override
-    public void setOnScrollListener(OnScrollUpDownListener listener) {
-        mScrollUpDownListener = listener;
+    public void setOnScrollListener(OnScrollListener listener) {
+        mScrollListener = listener;
     }
 
     @Override
@@ -699,10 +795,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         if (null != imageView) {
             // Check to see if the scale is within bounds
             if (scale < mMinScale || scale > mMaxScale) {
-                LogManager
-                    .getLogger()
-                    .i(LOG_TAG,
-                        "Scale must be within the range of minScale and maxScale");
                 return;
             }
 
@@ -755,11 +847,15 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     }
 
     public Matrix getDrawMatrix() {
-        //LogManager.getLogger().d(LOG_TAG, "getDrawMatrix----2");
         //相当于赋值：mDrawMatrix = mBaseMatrix
         mDrawMatrix.set(mBaseMatrix);
-        //相当于后乘：mDrawMatrix = mSuppMatrix * mDrawMatrix
-        LogManager.getLogger().d(LOG_TAG, "mDrawMatrix:" + mDrawMatrix + " mSuppMatrix:" + mSuppMatrix.toString());
+        /**
+         * 相当于后乘：
+         * mDrawMatrix = mSuppMatrix * mDrawMatrix
+         * 用于将两种效果复合，此种复合之后，平移的效果也会被缩小/放大
+         * 参考：https://blog.csdn.net/cquwentao/article/details/51445269
+         */
+
         mDrawMatrix.postConcat(mSuppMatrix);
         return mDrawMatrix;
     }
@@ -775,9 +871,9 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
      * Helper method that simply checks the Matrix, and then displays the result
      */
     private void checkAndDisplayMatrix() {
-        //if (checkMatrixBounds()) {
+        if (checkMatrixBounds()) {
             setImageViewMatrix(getDrawMatrix());
-        //}
+        }
     }
 
     private void checkImageViewScaleType() {
@@ -802,7 +898,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         }
 
         final RectF rect = getDisplayRect(getDrawMatrix());
-        LogManager.getLogger().d(LOG_TAG, "rect----------:" + rect.toShortString());
         if (null == rect) {
             return false;
         }
@@ -855,7 +950,20 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
         // Finally actually translate the matrix
         LogManager.getLogger().d(LOG_TAG, "checkMatrixBounds:" + " deltaX:" + deltaX + " deltaY:" + deltaY);
-        mSuppMatrix.postTranslate(deltaX, deltaY);
+        if (getScale() == getMinimumScale()) {
+
+            //if (!flag){
+            //    mSuppMatrix.postTranslate(deltaX,deltaY);
+            //}else {
+            mSuppMatrix.postTranslate(deltaX, 0);
+            //}
+        } else {
+            //if (ddx < ddy) {
+            mSuppMatrix.postTranslate(deltaX, deltaY);
+            //} else {
+            //    mSuppMatrix.postTranslate(deltaX, deltaY);
+            //}
+        }
         return true;
     }
 
@@ -1098,11 +1206,13 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     /**
      * Interface definition for a callback to be invoked when Scroll ImageView up or down
      */
-    public interface OnScrollUpDownListener {
+    public interface OnScrollListener {
 
         void onScrollUp(float distanceX, float distanceY);
 
         void onScrollDown(float distanceX, float distanceY);
+
+        void onScrollExit();
     }
 
     private class AnimatedZoomRunnable implements Runnable {
@@ -1157,9 +1267,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         }
 
         public void cancelFling() {
-            if (DEBUG) {
-                LogManager.getLogger().d(LOG_TAG, "Cancel Fling");
-            }
             mScroller.forceFinished(true);
         }
 
@@ -1191,13 +1298,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
             mCurrentX = startX;
             mCurrentY = startY;
 
-            if (DEBUG) {
-                LogManager.getLogger().d(
-                    LOG_TAG,
-                    "fling. StartX:" + startX + " StartY:" + startY
-                        + " MaxX:" + maxX + " MaxY:" + maxY);
-            }
-
             // If we actually can move, fling the scroller
             if (startX != maxX || startY != maxY) {
                 mScroller.fling(startX, startY, velocityX, velocityY, minX,
@@ -1216,14 +1316,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
                 final int newX = mScroller.getCurrX();
                 final int newY = mScroller.getCurrY();
-
-                if (DEBUG) {
-                    LogManager.getLogger().d(
-                        LOG_TAG,
-                        "fling run(). CurrentX:" + mCurrentX + " CurrentY:"
-                            + mCurrentY + " NewX:" + newX + " NewY:"
-                            + newY);
-                }
 
                 mSuppMatrix.postTranslate(mCurrentX - newX, mCurrentY - newY);
                 setImageViewMatrix(getDrawMatrix());

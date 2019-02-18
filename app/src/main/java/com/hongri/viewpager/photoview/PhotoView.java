@@ -25,7 +25,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnPhotoTapListener;
-import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollUpDownListener;
+import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -238,7 +238,7 @@ public class PhotoView extends GifImageView implements IPhotoView {
     }
 
     @Override
-    public void setOnScrollListener(OnScrollUpDownListener listener){
+    public void setOnScrollListener(OnScrollListener listener){
         mAttacher.setOnScrollListener(listener);
     }
 

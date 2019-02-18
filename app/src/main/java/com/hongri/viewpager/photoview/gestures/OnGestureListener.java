@@ -20,11 +20,43 @@ package com.hongri.viewpager.photoview.gestures;
  */
 public interface OnGestureListener {
 
-    void onDrag(float dx, float dy);
+    /**
+     *
+     * @param mMovedDistanceY 图片已经被拖拽的距离
+     * @param dx
+     * @param dy
+     */
+    void onDrag(float mMovedDistanceY, float dx, float dy);
 
+    /**
+     *
+     * @param willExit 是否退出看图模式
+     * @param mDragedDistanceY 松手后，图片需要自动回弹或者弹出(退出)的距离
+     * @param dx
+     */
+    void onDragRelease(boolean willExit, float mDragedDistanceY, float dx);
+
+    /**
+     *
+     * @param startX
+     * @param startY
+     * @param velocityX
+     * @param velocityY
+     */
     void onFling(float startX, float startY, float velocityX,
                  float velocityY);
 
+    /**
+     *
+     * @param scaleFactor
+     * @param focusX
+     * @param focusY
+     */
     void onScale(float scaleFactor, float focusX, float focusY);
+
+    /**
+     * 退出看图模式
+     */
+    void onExit();
 
 }

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
+import com.hongri.viewpager.photoview.PhotoViewAttacher;
 import com.hongri.viewpager.photoview.log.LogManager;
 
 /**
@@ -30,6 +31,9 @@ public class BaseGestureDetector implements GestureDetector {
     private static final String TAG = BaseGestureDetector.class.getSimpleName();
     float mLastTouchX;
     float mLastTouchY;
+    float mBeginningTouchPointY;
+    float mDragedDistanceY;
+    float mEnddingTouchPointY;
     final float mTouchSlop;
     final float mMinimumVelocity;
 
@@ -68,7 +72,6 @@ public class BaseGestureDetector implements GestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        //LogManager.getLogger().d(TAG, "onTouchEvent--" + ev.getAction());
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mVelocityTracker = VelocityTracker.obtain();
@@ -80,23 +83,26 @@ public class BaseGestureDetector implements GestureDetector {
 
                 mLastTouchX = getActiveX(ev);
                 mLastTouchY = getActiveY(ev);
+
+                mBeginningTouchPointY = getActiveY(ev);
+
                 mIsDragging = false;
                 break;
             }
 
+            //moto 2368 * 1440
             case MotionEvent.ACTION_MOVE: {
                 final float x = getActiveX(ev);
                 final float y = getActiveY(ev);
                 final float dx = x - mLastTouchX, dy = y - mLastTouchY;
+                mDragedDistanceY = Math.abs(y - mBeginningTouchPointY);
 
                 if (!mIsDragging) {
-                    // Use Pythagoras to see if drag length is larger than
-                    // touch slop
                     mIsDragging = Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
                 }
 
                 if (mIsDragging) {
-                    mListener.onDrag(dx, dy);
+                    mListener.onDrag(mDragedDistanceY, dx, dy);
                     mLastTouchX = x;
                     mLastTouchY = y;
 
@@ -122,6 +128,20 @@ public class BaseGestureDetector implements GestureDetector {
                         mLastTouchX = getActiveX(ev);
                         mLastTouchY = getActiveY(ev);
 
+                        mEnddingTouchPointY = getActiveY(ev);
+
+                        mDragedDistanceY = mEnddingTouchPointY - mBeginningTouchPointY;
+                        if (Math.abs(mDragedDistanceY) > PhotoViewAttacher.ALPHA_CHANGE_TIME) {
+                            if (mDragedDistanceY > 0) {
+                                //下滑
+                                mListener.onDragRelease(true, PhotoViewAttacher.SCREEM_HEIGHT - mDragedDistanceY, 0);
+                            } else {
+                                //上滑
+                                mListener.onDragRelease(true, -(PhotoViewAttacher.SCREEM_HEIGHT + mDragedDistanceY), 0);
+                            }
+                        } else {
+                            mListener.onDragRelease(false, -mDragedDistanceY, 0);
+                        }
                         // Compute velocity within the last 1000ms
                         mVelocityTracker.addMovement(ev);
                         mVelocityTracker.computeCurrentVelocity(1000);

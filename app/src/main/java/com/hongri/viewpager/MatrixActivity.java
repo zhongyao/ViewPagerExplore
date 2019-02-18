@@ -1,7 +1,6 @@
 package com.hongri.viewpager;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -59,15 +58,15 @@ public class MatrixActivity extends AppCompatActivity {
         iv = findViewById(R.id.iv);
         iv.setScaleType(ScaleType.MATRIX);
 
-        drawable = iv.getDrawable();
+        //drawable = iv.getDrawable();
 
-        init(drawable);
+        //init(drawable);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.eye);
-        initMatrix(bitmap);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.eye);
+        //initMatrix(bitmap);
         //iv.setOnTouchListener(new TouchListener());
 
-        //updateMatrix(ACTION_CUSTOM);
+        updateMatrix(ACTION_CUSTOM);
     }
 
     private void init(Drawable drawable) {
@@ -250,7 +249,19 @@ public class MatrixActivity extends AppCompatActivity {
                 matrix.postSkew(0.2f, 0f);
                 break;
             case ACTION_CUSTOM:
-                matrix.setTranslate(10, 10);
+                /**
+                 * 1、x轴和y轴分别下移100
+                 */
+                matrix.setTranslate(100, 100);
+                /**
+                 * 2.1、前乘--移动距离不变，大小缩小0.5倍
+                 */
+                //matrix.preScale(0.5f,0.5f);
+
+                /**
+                 * 2.2、后乘--移动距离和大小均减少0.5倍【即后乘的移动距离受了影响】
+                 */
+
                 matrix.postScale(0.5f, 0.5f);
                 break;
             default:

@@ -70,8 +70,8 @@ public class ImageActivity extends Activity {
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.comic);
             //bitmap = BitmapUtil.pressBimmapInQuality(bitmap);
 
-            //Bitmap bitmap = BitmapUtil.pressBitmapInSampleSize(getResources(), R.drawable.comic, 200, 200);
-            //iv.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapUtil.pressBitmapInSampleSize(getResources(), R.drawable.comic, 200, 200);
+            iv.setImageBitmap(bitmap);
 
             //方法3
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.comic);
@@ -83,8 +83,8 @@ public class ImageActivity extends Activity {
             //bitmap = BitmapUtil.pressBitmapInRGB(bitmap, getResources(), R.drawable.comic);
 
             //方法5
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.comic);
-            bitmap = BitmapUtil.pressBitmapInScaledBitmap(bitmap);
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.comic);
+            //bitmap = BitmapUtil.pressBitmapInScaledBitmap(bitmap);
 
             iv.setImageBitmap(bitmap);
 

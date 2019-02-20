@@ -17,8 +17,22 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Matrix;
 
 /**
+ * 参考：
+ * https://blog.csdn.net/jdsjlzx/article/details/44228935#commentBox
+ * https://blog.csdn.net/HarryWeasley/article/details/51955467#commentBox
  * @author：zhongyao on 2016/7/11 10:39
- * @description:图片处理
+ * @description:图片处理 图片有三种存在形式：
+ * 硬盘上时是file，网络传输时是stream，内存中是stream或bitmap，
+ * 所谓的质量压缩，他其实只能实现对file的影响，当把一个Bitmap进行转成file，这个file是压缩过的，
+ * 但是中间的Bitmap并没有压缩，因为Bitmap在内存中的大小是按照像素来计算的。对于质量压缩，并没有改变图片的像素，
+ * 所以就算质量被压缩了，内存占有率其实没变，但是当把其转成file时，确实变小了。
+ *
+ * *****质量压缩(应用于图片上传等)：
+ * 1、质量压缩不会减少图片的像素，它是在保持像素的前提下改变图片的位深及透明度等，来达到压缩图片的目的。
+ * 2、长、宽、像素均不变，那么Bitmap所占有的内存大小也是不变的，故无法避免OOM，但可以改变图片在磁盘或者File文件的大小。
+ * 注：PNG图片是无损的，所以不能进行质量压缩
+ * *****尺寸压缩(应用于缩略图等)：
+ * 可以避免OOM，减小了图片的像素，所以改变了加载在内存中的大小。
  */
 public class BitmapUtil {
 
@@ -41,18 +55,43 @@ public class BitmapUtil {
     /**
      * 1、质量压缩:
      * 可以看到图片的大小、宽、高是不变的，所以所占用的内存大小也不会变
-     * 但是bytes.length是随着quality变小而变小的。这样适合去传递二进制的图片数据
+     * 但是bytes.length是随着quality变小而变小的。这样适合去传递二进制的图片数据，
+     * 比如微信分享图片，要传入二进制数据过去，限制32kb之内。
      */
     public static Bitmap pressBimmapInQuality(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int quality = 10;
-        forBitmapPressedLog(0, bitmap, null, quality);
-        bitmap.compress(CompressFormat.JPEG, quality, baos);
-        byte[] bytes = baos.toByteArray();
 
+        byte[] bytes;
+        int maxSize = 100;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //这里的100表示不压缩，将压缩后的数据放到baos中
+        bitmap.compress(CompressFormat.JPEG, 100, baos);
+        bytes = baos.toByteArray();
+        int quality = 100;
+        forBitmapPressedLog(0, bitmap, bytes, quality);
+        while (baos.toByteArray().length / 1024 > maxSize && quality > 20) {
+            //清空baos
+            baos.reset();
+            //每次都减少10
+            quality -= 10;
+            bitmap.compress(CompressFormat.JPEG, quality, baos);
+            Logger.d("quality:::" + quality);
+        }
+
+        bytes = baos.toByteArray();
         bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         forBitmapPressedLog(1, bitmap, bytes, quality);
         return bitmap;
+
+        //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //int quality = 10;
+        //forBitmapPressedLog(0, bitmap, null, quality);
+        //bitmap.compress(CompressFormat.JPEG, quality, baos);
+        //byte[] bytes = baos.toByteArray();
+        //
+        //bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        //forBitmapPressedLog(1, bitmap, bytes, quality);
+        //return bitmap;
     }
 
     /**

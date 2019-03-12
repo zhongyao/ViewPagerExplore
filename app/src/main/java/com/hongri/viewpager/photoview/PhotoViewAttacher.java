@@ -432,7 +432,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                     imageView.getBackground().setAlpha(alphaValue);
                 }
                 flag = true;
-            }else if (Math.abs(dx) > 2 * Math.abs(dy)){
+            } else if (Math.abs(dx) > 2 * Math.abs(dy)) {
                 dy = 0;
             }
         } else {
@@ -608,7 +608,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
     @Override
     public void onScale(float scaleFactor, float focusX, float focusY) {
-        if (getScale() < mMaxScale || scaleFactor < 1f) {
+        if ((getScale() < mMaxScale && scaleFactor > 1.0f) || (getScale() > mMinScale && scaleFactor < 1.0f)) {
             if (null != mScaleChangeListener) {
                 mScaleChangeListener.onScaleChange(scaleFactor, focusX, focusY);
             }
@@ -850,7 +850,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         //相当于赋值：mDrawMatrix = mBaseMatrix
         mDrawMatrix.set(mBaseMatrix);
         /**
-         * 相当于后乘：
+         * 相当于后乘（左乘）：
          * mDrawMatrix = mSuppMatrix * mDrawMatrix
          * 用于将两种效果复合，此种复合之后，平移的效果也会被缩小/放大
          * 参考：https://blog.csdn.net/cquwentao/article/details/51445269

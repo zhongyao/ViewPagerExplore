@@ -21,6 +21,7 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import com.hongri.viewpager.photoview.PhotoViewAttacher;
 import com.hongri.viewpager.photoview.log.LogManager;
+import com.hongri.viewpager.util.Logger;
 
 /**
  * @author zhongyao
@@ -36,6 +37,7 @@ public class BaseGestureDetector implements GestureDetector {
     float mEnddingTouchPointY;
     final float mTouchSlop;
     final float mMinimumVelocity;
+    private boolean mIsPointerDown = false;
 
     @Override
     public void setOnGestureListener(OnGestureListener listener) {
@@ -72,8 +74,11 @@ public class BaseGestureDetector implements GestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
+
+        final int action = ev.getAction();
+        switch (action & MotionEvent.ACTION_MASK){
             case MotionEvent.ACTION_DOWN: {
+                mIsPointerDown = false;
                 mVelocityTracker = VelocityTracker.obtain();
                 if (null != mVelocityTracker) {
                     mVelocityTracker.addMovement(ev);
@@ -101,7 +106,7 @@ public class BaseGestureDetector implements GestureDetector {
                     mIsDragging = Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
                 }
 
-                if (mIsDragging) {
+                if (mIsDragging && !mIsPointerDown) {
                     mListener.onDrag(mDragedDistanceY, dx, dy);
                     mLastTouchX = x;
                     mLastTouchY = y;
@@ -119,6 +124,16 @@ public class BaseGestureDetector implements GestureDetector {
                     mVelocityTracker.recycle();
                     mVelocityTracker = null;
                 }
+                break;
+            }
+
+            case MotionEvent.ACTION_POINTER_DOWN:{
+                mIsPointerDown = true;
+                com.hongri.viewpager.util.Logger.d("ACTION_POINTER_DOWN");
+                break;
+            }
+            case MotionEvent.ACTION_POINTER_UP:{
+                Logger.d("ACTION_POINTER_UP");
                 break;
             }
 

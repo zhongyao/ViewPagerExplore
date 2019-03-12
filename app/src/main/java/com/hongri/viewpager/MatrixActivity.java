@@ -1,5 +1,7 @@
 package com.hongri.viewpager;
 
+import java.util.Arrays;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.hongri.viewpager.util.Logger;
@@ -30,8 +33,11 @@ import com.hongri.viewpager.util.Logger;
  *         https://blog.csdn.net/cquwentao/article/details/51445269
  *         https://blog.csdn.net/gaojinshan/article/details/17334181
  *
+ *         pre 前乘（右乘）：M' = M * T
+ *         post 后乘（左乘）：M' = T * M
+ *
  *         set系列方法：setTranslate setScale setRotate setSkew 设置 会覆盖之前的参数
- *         pre系列方法：preTranslate preScale preRotate preSkew 矩阵先乘 M' = M * T(dx, dy)
+ *         pre系列方法：preTranslate preScale preRotate preSkew 矩阵前乘 M' = M * T(dx, dy)
  *         post系列方法：postTranslate postScale postRotate postSkew 矩阵后乘 M' = T(dx, dy)*M
  */
 @RequiresApi(api = VERSION_CODES.LOLLIPOP)
@@ -44,12 +50,14 @@ public class MatrixActivity extends AppCompatActivity {
     public static final int ACTION_SCALE = 103;
     public static final int ACTION_SKEW = 104;
     public static final int ACTION_CUSTOM = 105;
+    public static final int NONE = 105;
     public static final String TAG = MatrixActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_matrix);
 
         if (getSupportActionBar() != null) {
@@ -66,7 +74,79 @@ public class MatrixActivity extends AppCompatActivity {
         //initMatrix(bitmap);
         //iv.setOnTouchListener(new TouchListener());
 
-        updateMatrix(ACTION_CUSTOM);
+        updateMatrix(ACTION_SCALE);
+
+        /**
+         * 矩阵其他重要方法测试
+         */
+        testMethod();
+    }
+
+    Matrix mMatrix = new Matrix();
+
+    private void testMethod() {
+        //初始数据为三个点 (0, 0) (80, 100) (400, 300)
+        //float[] pts = new float[] {0, 0, 80, 100, 400, 300};
+        //mMatrix.setScale(0.5f, 1f);
+        //Logger.d("before:" + Arrays.toString(pts));
+        //mMatrix.mapPoints(pts);
+        //Logger.d("after:" + Arrays.toString(pts));
+
+        /**
+         * 原始数据需要保留，用此方法
+         */
+        //float[] src = new float[] {0, 0, 80, 100, 400, 300};
+        //float[] dst = new float[] {0, 0, 0, 0, 0, 0};
+        //mMatrix.setScale(0.5f, 1f);
+        //Logger.d("before:\n" + "src:" + Arrays.toString(src) + "  dst:" + Arrays.toString(dst));
+        //mMatrix.mapPoints(dst, src);
+        //Logger.d("after:\n" + "src:" + Arrays.toString(src) + "  dst:" + Arrays.toString(dst));
+
+        /**
+         * 将第二个第三个计算后存储在dst最初始位置
+         */
+        //float[] src = new float[] {0, 0, 80, 100, 400, 300};
+        //float[] dst = new float[6];
+        //mMatrix.setScale(0.5f,1f);
+        //Logger.d("before:\n" + "src:" + Arrays.toString(src) + "  dst:" + Arrays.toString(dst));
+        //mMatrix.mapPoints(dst,0,src,2,2);
+        //Logger.d("before:\n" + "src:" + Arrays.toString(src) + "  dst:" + Arrays.toString(dst));
+
+        /**
+         * 测量半径，由于圆可能会因为画布变换变成椭圆，所以此处测量的是平均半径。
+         */
+        //float radius = 100;
+        //float result;
+        //mMatrix.setScale(0.5f, 1f);
+        //Logger.d("before:mapRadius " + radius);
+        //result = mMatrix.mapRadius(radius);
+        //Logger.d("after:mapRadius " + result);
+
+        /**
+         * 测量Rect并将结果放入Rect中，返回值是矩阵经过变换后是否依然为矩阵
+         */
+        //RectF rectF = new RectF(400, 400, 1000, 800);
+        //mMatrix.setScale(0.5f, 1f);
+        //mMatrix.postSkew(1, 0);
+        //Logger.d("before:mapRect:" + rectF.toString());
+        //boolean result = mMatrix.mapRect(rectF);
+        //Logger.d("after:mapRect:" + rectF.toString());
+        //Logger.d("result:" + result);
+
+        float[] src = new float[] {1000, 800};
+        float[] dst = new float[2];
+
+        mMatrix.setScale(0.5f, 1f);
+        mMatrix.postTranslate(100, 100);
+
+        // 计算向量, 不受位移影响
+        mMatrix.mapVectors(dst, src);
+        Logger.d("mapVectors: " + Arrays.toString(dst));
+
+        // 计算点
+        mMatrix.mapPoints(dst, src);
+        Logger.d("mapPoints: " + Arrays.toString(dst));
+
     }
 
     private void init(Drawable drawable) {
@@ -234,19 +314,29 @@ public class MatrixActivity extends AppCompatActivity {
 
         switch (action) {
             case ACTION_ROTATE:
+                //matrix.postRotate(30);
+                matrix.postRotate(30, 200, 200);
                 //matrix.postRotate(45, iv.getWidth() / 2, iv.getHeight() / 2);
-                matrix.postRotate(45, 0, 0);
+                //matrix.postRotate(45, 0, 0);
                 break;
             case ACTION_TRANSLATE:
-                matrix.postTranslate(250, 250);
+                //matrix.preTranslate(200,200);
+                matrix.postTranslate(200, 200);
                 break;
             case ACTION_SCALE:
-                //matrix.postScale(1 / 2f, 2, 100, 100);
-                matrix.postScale(2, 2, 0, 0);
+
+                //旋转180度
+                matrix.postScale(-0.5f, 1);
+                //左右倒置（镜像）
+                //matrix.postScale(-1,1);
+                //上下倒置
+                //matrix.postScale(1,-1);
+                //matrix.postScale(2.0f,2.0f,-200,-200);
                 break;
             case ACTION_SKEW:
                 //matrix.postSkew(0.2f, 0.2f, 100, 100);
-                matrix.postSkew(0.2f, 0f);
+                //matrix.postSkew(0.3f, 0f);
+                matrix.postSkew(0.3f, 0f, -800, -800);
                 break;
             case ACTION_CUSTOM:
                 /**

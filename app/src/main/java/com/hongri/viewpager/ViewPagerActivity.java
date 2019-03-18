@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -26,13 +26,13 @@ import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
-import com.hongri.viewpager.util.DisplayUtil;
 import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ResHelper;
 import com.hongri.viewpager.util.ToastUtil;
 import com.hongri.viewpager.widget.CustomImageView;
 import com.hongri.viewpager.widget.CustomPhotoView;
+import com.hongri.viewpager.widget.PhotoViewPager;
 
 /**
  * @author hongri
@@ -43,7 +43,7 @@ import com.hongri.viewpager.widget.CustomPhotoView;
  */
 public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveCallBack {
 
-    private ViewPager viewPager;
+    private PhotoViewPager viewPager;
     private MyPagerAdapter adapter;
     private LinearLayout indicatorContainer;
     private ArrayList<View> dataLists = new ArrayList<>();
@@ -57,10 +57,10 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
 
         String phoneInfo = "Product: " + android.os.Build.PRODUCT + "\n";
         phoneInfo += "CPU_ABI: " + android.os.Build.CPU_ABI + "\n";
@@ -168,7 +168,6 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
                 mTextView.setText(DataUtil.getDescriptions()[position] + " 点击text保持图片");
 
-
             }
 
             @Override
@@ -264,7 +263,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         }
     }
 
-    private class PhotoOnMatrixChangedListener implements OnMatrixChangedListener{
+    private class PhotoOnMatrixChangedListener implements OnMatrixChangedListener {
         @Override
         public void onMatrixChanged(RectF rect) {
         }
@@ -284,6 +283,6 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
          * 2、在应用中MOTO通过getResources方法获取的高度是2272 而通过其他方法获取的高度为2368
          *    而华为mate9 pro手机获取的宽高正常
          */
-        DisplayUtil.getPhoneInfo(activity,MyApplication.appContext);
+        //DisplayUtil.getPhoneInfo(activity, MyApplication.appContext);
     }
 }

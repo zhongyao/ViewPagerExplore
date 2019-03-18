@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.hongri.viewpager.ViewPagerActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.hongri.viewpager.widget.PhotoViewPager
         android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
         <android.support.v4.view.PagerTabStrip
@@ -19,7 +19,7 @@
             android:layout_gravity="top"
             android:visibility="gone"/>
 
-    </android.support.v4.view.ViewPager>
+    </com.hongri.viewpager.widget.PhotoViewPager>
 
     <RelativeLayout
         android:layout_width="fill_parent"

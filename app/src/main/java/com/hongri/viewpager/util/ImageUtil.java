@@ -51,6 +51,11 @@ public class ImageUtil {
 
         try {
             // 如果有目标文件，直接获得文件对象，否则创建一个以filename为名称的文件
+            file = new File(galleryPath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            // 如果有目标文件，直接获得文件对象，否则创建一个以filename为名称的文件
             file = new File(galleryPath, picNameUUID + ".jpg");
 
             // 获得文件相对路径

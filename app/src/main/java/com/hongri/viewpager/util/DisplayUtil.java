@@ -1,5 +1,6 @@
 package com.hongri.viewpager.util;
 
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
@@ -55,7 +57,9 @@ public class DisplayUtil {
         Logger.d("手机屏幕的height3（像素）-----通过appConext.gerResources获取：" + height3 + "\n");
 
         int realHeight = getDeviceRealHeight(mActivity);
-        Logger.d("手机屏幕的真实高度(屏幕展示高度+虚拟导航栏(if have)):" + realHeight);
+        int realHeight2 = getDeviceRealHeight2(mActivity);
+        Logger.d("手机屏幕的真实高度方法1(屏幕展示高度+虚拟导航栏(if have)):" + realHeight);
+        Logger.d("手机屏幕的真实高度方法2(屏幕展示高度+虚拟导航栏(if have)):" + realHeight2);
 
         int statusBarHeight = getStatusBarHeight(mActivity);
         Logger.d("手机屏幕的状态栏高度：" + statusBarHeight);
@@ -117,6 +121,7 @@ public class DisplayUtil {
 
     /**
      * 获取屏幕完整高度(屏幕展示高度+导航栏)[针对具有导航栏的手机]
+     * 方法一
      */
 
     public static int getDeviceRealHeight(Activity mActivity) {
@@ -129,6 +134,26 @@ public class DisplayUtil {
             mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
             realScreenH = dm.heightPixels;
         }
+        return realScreenH;
+    }
+
+    /**
+     * 获取屏幕完整高度(屏幕展示高度+导航栏)[针对具有导航栏的手机]
+     * 方法二:反射方法
+     */
+    public static int getDeviceRealHeight2(Activity mActivity) {
+        Display display = mActivity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        int realScreenH = 0;
+        try {
+            Class c = Class.forName("android.view.Display");
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
+            method.invoke(display, dm);
+            realScreenH = dm.heightPixels;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return realScreenH;
     }
 

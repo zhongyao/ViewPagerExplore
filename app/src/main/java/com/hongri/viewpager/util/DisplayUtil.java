@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
-import com.ali.comic.baseproject.utils.RomUtil;
 
 /**
  * 设备展示相关-工具类

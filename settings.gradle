@@ -1,1 +1,4 @@
+/**
+ * settings.gradle位于项目根目录，用于只是gradle构建应用时需要将哪些模块包括在内。
+ */
 include ':app'

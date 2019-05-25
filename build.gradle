@@ -1,6 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 /**
+ * 关于gradle的配置构建参考官方文档：
+ * https://developer.android.com/studio/build?hl=zh-cn
+ *
  * 顶级构建文件build.gradle：
  * 位于项目根目录。用于定义适用于项目中所有模块的构建配置。
  */

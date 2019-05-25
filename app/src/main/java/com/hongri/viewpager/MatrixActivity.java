@@ -5,6 +5,7 @@ import java.util.Arrays;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
@@ -20,8 +21,8 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import com.hongri.viewpager.util.Logger;
+import com.hongri.viewpager.util.ResHelper;
 
 /**
  * rectangle [数]长方形 矩形
@@ -64,7 +65,10 @@ public class MatrixActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         iv = findViewById(R.id.iv);
-        iv.setScaleType(ScaleType.MATRIX);
+        Drawable drawable = getDyeDrawable(R.drawable.st_web_container_back,
+            ResHelper.getColor(R.color.common_default_red_color));
+        iv.setImageDrawable(drawable);
+        //iv.setScaleType(ScaleType.MATRIX);
 
         //drawable = iv.getDrawable();
 
@@ -74,12 +78,20 @@ public class MatrixActivity extends AppCompatActivity {
         //initMatrix(bitmap);
         //iv.setOnTouchListener(new TouchListener());
 
-        updateMatrix(ACTION_SCALE);
+        //updateMatrix(ACTION_SCALE);
 
         /**
          * 矩阵其他重要方法测试
          */
-        testMethod();
+        //testMethod();
+    }
+
+    public static Drawable getDyeDrawable(int resId, int colorValue) {
+        Drawable drawable = ResHelper.getDrawable(resId);
+        if (drawable != null) {
+            drawable.setColorFilter(new LightingColorFilter(0xFF000000, colorValue));
+        }
+        return drawable;
     }
 
     Matrix mMatrix = new Matrix();

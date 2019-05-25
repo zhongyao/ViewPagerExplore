@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -26,6 +27,7 @@ import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnViewTapListener;
 import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.util.DisplayUtil;
 import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ResHelper;
@@ -58,9 +60,10 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //if (getSupportActionBar() != null) {
+        //    getSupportActionBar().hide();
+        //}
 
         String phoneInfo = "Product: " + android.os.Build.PRODUCT + "\n";
         phoneInfo += "CPU_ABI: " + android.os.Build.CPU_ABI + "\n";
@@ -82,6 +85,13 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         Logger.d("phoneInfo:" + phoneInfo);
 
         setContentView(R.layout.activity_view_pager);
+
+        //WindowManager.LayoutParams lp = getWindow().getAttributes();
+        //lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+        //getWindow().setAttributes(lp);
+
+
+        //DisplayCutout cutout = new DisplayCutout(this);
 
         viewPager = findViewById(R.id.viewPager);
         indicatorContainer = findViewById(R.id.indicatorContainer);
@@ -284,5 +294,8 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
          *    而华为mate9 pro手机获取的宽高正常
          */
         //DisplayUtil.getPhoneInfo(activity, MyApplication.appContext);
+        //DisplayUtil.getPhoneInfo((Activity)mContext, MyApplication.appContext);
+        DisplayUtil.getPhoneInfo(activity, MyApplication.appContext);
+
     }
 }

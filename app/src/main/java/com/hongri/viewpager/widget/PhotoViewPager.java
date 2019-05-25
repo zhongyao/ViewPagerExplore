@@ -1,12 +1,11 @@
 package com.hongri.viewpager.widget;
 
-import android.app.Activity;
+import java.lang.reflect.Field;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import com.hongri.viewpager.MyApplication;
-import com.hongri.viewpager.util.DisplayUtil;
 import com.hongri.viewpager.util.Logger;
 
 /**
@@ -22,8 +21,9 @@ public class PhotoViewPager extends ViewPager {
     public PhotoViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        DisplayUtil.getPhoneInfo((Activity)mContext, MyApplication.appContext);
         Logger.d(TAG + "PhotoViewPager");
+        //修改ViewPager的mTouchSlop值
+        init();
     }
 
     @Override
@@ -49,4 +49,15 @@ public class PhotoViewPager extends ViewPager {
         super.onWindowFocusChanged(hasWindowFocus);
         Logger.d(TAG + "onWindowFocusChanged");
     }
+
+    private void init() {
+        try {
+            Field field = ViewPager.class.getDeclaredField("mTouchSlop");
+            field.setAccessible(true);
+            field.setInt(this,10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

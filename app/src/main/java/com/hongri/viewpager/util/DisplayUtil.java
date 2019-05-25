@@ -1,5 +1,6 @@
 package com.hongri.viewpager.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
 
@@ -8,7 +9,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Environment;
@@ -17,8 +20,10 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
+import com.ali.comic.baseproject.utils.RomUtil;
 
 /**
  * 设备展示相关-工具类
@@ -58,8 +63,10 @@ public class DisplayUtil {
 
         int realHeight = getDeviceRealHeight(mActivity);
         int realHeight2 = getDeviceRealHeight2(mActivity);
+        int realHeight3 = getDpi(mActivity);
         Logger.d("手机屏幕的真实高度方法1(屏幕展示高度+虚拟导航栏(if have)):" + realHeight);
         Logger.d("手机屏幕的真实高度方法2(屏幕展示高度+虚拟导航栏(if have)):" + realHeight2);
+        Logger.d("手机屏幕的真实高度方法3(屏幕展示高度+虚拟导航栏(if have)):" + realHeight3);
 
         int statusBarHeight = getStatusBarHeight(mActivity);
         Logger.d("手机屏幕的状态栏高度：" + statusBarHeight);
@@ -68,7 +75,13 @@ public class DisplayUtil {
         Logger.d("手机屏幕的标题栏高度：" + titleBarHeight);
 
         int navigationBarHeight = realHeight - height;
+        int navigationBarHeight2 = getNaviBarHeight(mActivity);
+        Logger.d("是否包含虚拟导航栏：" + hasNavBar(mActivity));
         Logger.d("手机屏幕的虚拟导航栏高度：" + navigationBarHeight);
+        Logger.d("手机屏幕的虚拟导航栏高度2：" + navigationBarHeight2);
+
+        Logger.d("判断是否有刘海屏---:"+ RomUtil.hasNotchScreen(mActivity));
+        Logger.d("设备刘海屏高度:"+ RomUtil.getNotchSize(mActivity)[0]);
 
         final float scale = mActivity.getResources().getDisplayMetrics().density;
         int px2dpX = (int)(width / scale + 0.5f);
@@ -138,6 +151,32 @@ public class DisplayUtil {
     }
 
     /**
+     * 获取屏幕原始尺寸高度，包括虚拟功能键高度
+     */
+    public static int getDpi(Context context) {
+        if (context == null) {
+            return 0;
+        }
+
+        int dpi = 0;
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        @SuppressWarnings("rawtypes")
+        Class c;
+        try {
+            c = Class.forName("android.view.Display");
+            @SuppressWarnings("unchecked")
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
+            method.invoke(display, displayMetrics);
+            dpi = displayMetrics.heightPixels;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dpi;
+    }
+
+    /**
      * 获取屏幕完整高度(屏幕展示高度+导航栏)[针对具有导航栏的手机]
      * 方法二:反射方法
      */
@@ -155,6 +194,55 @@ public class DisplayUtil {
         }
 
         return realScreenH;
+    }
+
+    public static int getNaviBarHeight(Context context) {
+        int sNaviBarHeight;
+        try {
+            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Object o = c.newInstance();
+            Field field = c.getField("navigation_bar_height");
+            int x = (Integer)field.get(o);
+            sNaviBarHeight = context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e) {
+            final int dp = 48;
+            float density = context.getResources().getDisplayMetrics().density;
+            sNaviBarHeight = Math.round(density * dp);
+            e.printStackTrace();
+        }
+        return sNaviBarHeight;
+    }
+
+    public static boolean hasNavBar(Context context) {
+        Resources res = context.getResources();
+        int resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (resourceId != 0) {
+            boolean hasNav = res.getBoolean(resourceId);
+            // check override flag
+            String sNavBarOverride = getNavBarOverride();
+            if ("1".equals(sNavBarOverride)) {
+                hasNav = false;
+            } else if ("0".equals(sNavBarOverride)) {
+                hasNav = true;
+            }
+            return hasNav;
+        } else { // fallback
+            return !ViewConfiguration.get(context).hasPermanentMenuKey();
+        }
+    }
+
+    private static String getNavBarOverride() {
+        String sNavBarOverride = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                Class c = Class.forName("android.os.SystemProperties");
+                Method m = c.getDeclaredMethod("get", String.class);
+                m.setAccessible(true);
+                sNavBarOverride = (String)m.invoke(null, "qemu.hw.mainkeys");
+            } catch (Throwable e) {
+            }
+        }
+        return sNavBarOverride;
     }
 
     /**

@@ -49,6 +49,8 @@ allprojects {
  */
 ext {
     compileSdkVersion = 28
+    //可选，一般使用默认值
+//    buildToolsVersion = "28.0.3"
     applicationId = "com.hongri.viewpager"
     minSdkVersion = 16
     targetSdkVersion = 28

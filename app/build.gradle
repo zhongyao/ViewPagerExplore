@@ -15,12 +15,72 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            //是否开启混淆【用来删除无用代码，比如没有引用到的代码】
+            minifyEnabled true
+            //是否打开资源压缩【用来删除无用资源，也就是没有被引用的文件。但是因为需要知道是否被引用所以需要配合minifyEnabled来使用，即打开资源压缩的前提下需要将混淆打开】
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        /**
+         * 在debug模式下
+         * minifyEnable 及 shrinkResources 建议都为false：
+         * 因为这样混淆及压缩资源会使编译时间变长。
+         */
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    flavorDimensions "tier"
+    /**
+     * productFlavors 用来定义不同特性的产品（这里用free 与 paid来定义）
+     *
+     * manifestPlaceholders:
+     * 可以替换androidManifest文件中的标签，可作为快速渠道打包替换渠道名的一种方式;
+     * 也可以自定义标签用来替换需要的文本，多作为不同环境不同key的修改。
+     *
+     */
+    productFlavors {
+        free {
+            dimension "tier"
+            applicationId 'com.hongri.viewpager.free'
+            versionCode 1
+            versionName "1.0"
+            manifestPlaceholders = [HONGRI_CHANNEL_VALUE:"channel_free"]
+        }
+
+        paid {
+            dimension "tier"
+            applicationId 'com.hongri.viewpager.paid'
+            versionCode 2
+            versionName "1.0.1"
+            manifestPlaceholders = [HONGRI_CHANNEL_VALUE: "channel_paid"]
+        }
+    }
+
+
+    /**
+     * 定义一个splits代码块来配置分割，目前支持density分割和ABI分割
+     */
+    splits {
+        density {
+            enable false
+            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+        }
+
+        abi {
+            enable false
+            include 'x86', 'armeabi-v7a', 'mips'
         }
     }
 }
 
+/**
+ * module层依赖配置，只真对该module适用的依赖
+ */
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"

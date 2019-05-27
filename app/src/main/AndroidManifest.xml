@@ -10,12 +10,13 @@
 
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
+
     <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
+        android:anyDensity="true"
         android:largeScreens="true"
+        android:normalScreens="true"
         android:resizeable="true"
-        android:anyDensity="true" />
+        android:smallScreens="true"/>
 
     <application
         android:name=".MyApplication"
@@ -26,6 +27,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="HONGRI_CHANNEL"
+            android:value="${HONGRI_CHANNEL_VALUE}"/>
+
         <activity android:name=".MainActivity">
 
         </activity>

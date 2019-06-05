@@ -18,7 +18,17 @@ android {
     }
     buildTypes {
         release {
-            //是否开启混淆【用来删除无用代码，比如没有引用到的代码】
+            /**
+             * 是否开启混淆（参考：
+             * https://droidyue.com/blog/2016/07/10/understanding-android-obfuscated-code-by-proguard/
+             * https://www.jianshu.com/p/9dacabd351e3
+             *
+             * Proguard是一个集文件压缩,优化,混淆和校验等功能的工具
+             * 它检测并删除无用的类,变量,方法和属性
+             * 它优化字节码并删除无用的指令，比如没有引用到的代码.
+             * 它通过将类名,变量名和方法名重命名为无意义的名称实现混淆效果.
+             * 最后它还校验处理后的代码
+             */
             minifyEnabled true
             //是否打开资源压缩【用来删除无用资源，也就是没有被引用的文件。但是因为需要知道是否被引用所以需要配合minifyEnabled来使用，即打开资源压缩的前提下需要将混淆打开】
             shrinkResources true

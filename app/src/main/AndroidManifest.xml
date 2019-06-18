@@ -11,13 +11,6 @@
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
-    <!--<supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:resizeable="true"
-        android:smallScreens="true"/>-->
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -28,35 +21,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <!--<meta-data
-            android:name="HONGRI_CHANNEL"
-            android:value="${HONGRI_CHANNEL_VALUE}"/>-->
-
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity
-            android:name=".ViewPagerActivity"
-            android:theme="@style/translucentTheme">
+        <activity android:name=".LongImageViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
-
+        </activity>
+        <!--
+        <meta-data
+            android:name="HONGRI_CHANNEL"
+            android:value="${HONGRI_CHANNEL_VALUE}"/>
+        -->
+        <activity android:name=".MainActivity">
+        </activity>
+        <activity
+            android:name=".ViewPagerActivity"
+            android:theme="@style/translucentTheme">
         </activity>
         <activity android:name=".TestImageControlActivity">
         </activity>
         <activity android:name=".PhotoViewActivity">
         </activity>
         <activity android:name=".MatrixActivity">
-
         </activity>
         <activity android:name=".WebViewActivity">
         </activity>
         <activity android:name=".ImageActivity">
+
         </activity>
         <activity android:name=".SpannableActivity">
         </activity>
@@ -65,7 +57,6 @@
         <activity android:name=".GestureActivity">
         </activity>
         <activity android:name=".ScreenShotActivity">
-
         </activity>
     </application>
 

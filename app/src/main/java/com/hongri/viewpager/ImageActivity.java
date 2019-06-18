@@ -1,8 +1,5 @@
 package com.hongri.viewpager;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -17,12 +14,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import com.hongri.viewpager.util.BitmapUtil;
 import com.hongri.viewpager.util.Logger;
-import com.hongri.viewpager.widget.BigImageView;
 
 public class ImageActivity extends Activity {
 
     private ImageView image_view;
-    private BigImageView bigImageView;
     private ImageView iv;
 
     @Override
@@ -59,10 +54,6 @@ public class ImageActivity extends Activity {
             Logger.d("maxHeapMemory:" + maxHeapMemory);
             iv = findViewById(R.id.iv);
             //iv.setScaleType(ScaleType.CENTER_CROP);
-            bigImageView = findViewById(R.id.bigImageView);
-
-            InputStream inputStream = getResources().getAssets().open("comic.jpeg");
-            bigImageView.setInputStream(inputStream);
 
             //Bitmap bitmap = BitmapUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.comic, 1920/2,
             //    1080/2);
@@ -88,7 +79,7 @@ public class ImageActivity extends Activity {
 
             iv.setImageBitmap(bitmap);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

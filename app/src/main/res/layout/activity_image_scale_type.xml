@@ -12,12 +12,6 @@
         android:background="@android:color/holo_purple"
         android:visibility="gone"/>
 
-    <com.hongri.viewpager.widget.BigImageView
-        android:id="@+id/bigImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-
     <ImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"

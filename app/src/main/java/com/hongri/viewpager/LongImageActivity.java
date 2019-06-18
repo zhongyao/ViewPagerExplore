@@ -16,7 +16,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import com.hongri.viewpager.widget.BigImageView;
 
-public class LongImageViewActivity extends AppCompatActivity {
+public class LongImageActivity extends AppCompatActivity {
 
     private ImageView mImageView;
     private BigImageView mBigImageView;

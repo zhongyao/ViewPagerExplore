@@ -46,7 +46,7 @@ android {
         }
     }
 
-    flavorDimensions "tier"
+//    flavorDimensions "tier"
     /**
      * productFlavors 用来定义不同特性的产品（这里用free 与 paid来定义）
      *
@@ -55,63 +55,64 @@ android {
      * 也可以自定义标签用来替换需要的文本，多作为不同环境不同key的修改。
      *
      */
-    productFlavors {
-        free {
-            dimension "tier"
-            applicationId 'com.hongri.viewpager.free'
-            versionCode 1
-            versionName "1.0"
-            manifestPlaceholders = [HONGRI_CHANNEL_VALUE: "channel_free"]
-        }
+//    productFlavors {
+//        free {
+//            dimension "tier"
+//            applicationId 'com.hongri.viewpager.free'
+//            versionCode 1
+//            versionName "1.0"
+//            manifestPlaceholders = [HONGRI_CHANNEL_VALUE: "channel_free"]
+//        }
 
-        paid {
-            dimension "tier"
-            applicationId 'com.hongri.viewpager.paid'
-            versionCode 2
-            versionName "1.0.1"
-            manifestPlaceholders = [HONGRI_CHANNEL_VALUE: "channel_paid"]
-        }
-    }
+//        paid {
+//            dimension "tier"
+//            applicationId 'com.hongri.viewpager.paid'
+//            versionCode 2
+//            versionName "1.0.1"
+//            manifestPlaceholders = [HONGRI_CHANNEL_VALUE: "channel_paid"]
+//        }
+//    }
 
 
     /**
      * 定义一个splits代码块来配置分割，目前支持density分割和ABI分割
      */
-    splits {
-        density {
-            enable false
-            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
-            compatibleScreens 'small', 'normal', 'large', 'xlarge'
-        }
-
-        abi {
-            enable false
-            include 'x86', 'armeabi-v7a', 'mips'
-        }
-    }
+//    splits {
+//        density {
+//            enable false
+//            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
+//            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+//        }
+//
+//        abi {
+//            enable false
+//            include 'x86', 'armeabi-v7a', 'mips'
+//        }
+//    }
 }
 
-configurations.all {
-    //transitive--传递(透传): 用于自动处理子依赖项 默认为true gradle自动添加子依赖项，形成一个多层树形结构；设置为false，则需要自动添加依赖项
-    transitive = true
-
-    resolutionStrategy {
-        cacheChangingModulesFor(0, 'seconds')
-        //force 强制设置某个模块的版本
-        force 'com.android.support:viewpager:28.0.0'
-    }
-}
+//configurations.all {
+//    //transitive--传递(透传): 用于自动处理子依赖项 默认为true gradle自动添加子依赖项，形成一个多层树形结构；设置为false，则需要自动添加依赖项
+//    transitive = true
+//
+//    resolutionStrategy {
+//        cacheChangingModulesFor(0, 'seconds')
+//        //force 强制设置某个模块的版本
+//        force 'com.android.support:viewpager:28.0.0'
+//    }
+//}
 
 /**
  * module层依赖配置，只真对该module适用的依赖
  */
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation("com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}") {
+    implementation("com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}") /*{
         //exclude 可以设置不编译指定的模块
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude(module: 'support-compat')
-    }
+    }*/
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
 //    implementation 'com.github.chrisbanes.photoview:library:+'

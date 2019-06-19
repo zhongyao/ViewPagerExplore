@@ -69,6 +69,9 @@ public class MoveGestureDetector extends BaseGestureDetector {
 
         //Log.e("TAG", mPrePointer.toString() + " ,  " + mCurrentPointer);
 
+        /**
+         * 假如手指数不一样，那么跳过这次move事件
+         */
         boolean mSkipThisMoveEvent = prev.getPointerCount() != event.getPointerCount();
 
         //Log.e("TAG", "mSkipThisMoveEvent = " + mSkipThisMoveEvent);

@@ -14,12 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import com.hongri.viewpager.util.DeviceOpenGLUtil;
+import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.widget.BigImageView;
 
 public class LongImageActivity extends AppCompatActivity {
 
     private ImageView mImageView;
     private BigImageView mBigImageView;
+
+    private final String LONG_IMAGE_APP = "long_image_app.jpg";
+    private final String LONG_IMAGE_MAP = "long_image_map.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +39,29 @@ public class LongImageActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.iv);
         mBigImageView = findViewById(R.id.bigImageView);
 
-        //initImageView();
+        //打印硬解码情况下该设备纹理(texture)限制值
+        Logger.d("texture:" + DeviceOpenGLUtil.getGLESLimitTexture());
+        //在View层开启软解，View层开启的软解，只能打开不能关闭，即如果打开软解了，便不可以再打开硬解。
+        //mImageView.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+        //判断当前View是软解还是硬解
+        Logger.d("isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
 
-        initBigImageView();
+        /**
+         * 图片分开加载的一个简单测试
+         */
+        testImageRegionDecoder();
+        /**
+         * 加载原图
+         */
+        loadOriginalBigImage();
+
+        /**
+         * 使用分块加载方式加载超大图
+         */
+        regionDecoderBigImage();
     }
 
-    private void initImageView() {
+    private void testImageRegionDecoder() {
         try {
 
             /**
@@ -67,10 +89,28 @@ public class LongImageActivity extends AppCompatActivity {
         }
     }
 
-    private void initBigImageView() {
+    private void loadOriginalBigImage() {
+        try {
+            InputStream inputStream = getAssets().open(LONG_IMAGE_APP);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+            mImageView.setImageBitmap(bitmap);
+
+            //int inSampleSize = 1;
+            //while ((DeviceOpenGLUtil.getGLESLimitTexture() > 0) && (DeviceOpenGLUtil.getGLESLimitTexture() < (height
+            //    / inSampleSize))) {
+            //    inSampleSize *= 2;
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void regionDecoderBigImage() {
         InputStream inputStream;
         try {
-            inputStream = getAssets().open("long_image_map.jpg");
+            inputStream = getAssets().open(LONG_IMAGE_APP);
             mBigImageView.setInputStream(inputStream);
         } catch (IOException e) {
             e.printStackTrace();

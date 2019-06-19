@@ -109,9 +109,15 @@ public class BigImageView extends AppCompatImageView {
         int imageHeight = mImageHeight;
 
         //默认直接显示图片的中心区域，可以自己去调节
-        mRect.left = imageWidth / 2 - width / 2;
-        mRect.top = imageHeight / 2 - height / 2;
-        mRect.right = mRect.left + width;
+        //mRect.left = imageWidth / 2 - width / 2;
+        //mRect.top = imageHeight / 2 - height / 2;
+        //mRect.right = mRect.left + width;
+        //mRect.bottom = mRect.top + height;
+
+
+        mRect.left = 0;
+        mRect.top = 0;
+        mRect.right = mRect.left + 1080;
         mRect.bottom = mRect.top + height;
     }
 
@@ -134,7 +140,6 @@ public class BigImageView extends AppCompatImageView {
 
         Rect rect = mRect;
         int imageWidth = mImageWidth;
-        int imageHeight = mImageHeight;
 
         if (rect.right > imageWidth) {
             rect.right = imageWidth;
@@ -150,7 +155,6 @@ public class BigImageView extends AppCompatImageView {
     private void checkHeight() {
 
         Rect rect = mRect;
-        int imageWidth = mImageWidth;
         int imageHeight = mImageHeight;
 
         if (rect.bottom > imageHeight) {

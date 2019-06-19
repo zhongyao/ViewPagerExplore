@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
+import com.hongri.viewpager.MyApplication;
+import com.hongri.viewpager.R;
+import com.hongri.viewpager.callback.STPhotoSaveCallBack;
 import com.hongri.viewpager.adapter.MyPagerAdapter;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.hongri.viewpager.photoview.PhotoViewAttacher.OnScrollListener;

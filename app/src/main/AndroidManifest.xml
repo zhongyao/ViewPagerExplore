@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LongImageActivity">
+        <activity android:name=".activity.LongImageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -33,31 +33,27 @@
             android:name="HONGRI_CHANNEL"
             android:value="${HONGRI_CHANNEL_VALUE}"/>
         -->
-        <activity android:name=".MainActivity">
-        </activity>
         <activity
-            android:name=".ViewPagerActivity"
+            android:name=".activity.ViewPagerActivity"
             android:theme="@style/translucentTheme">
 
         </activity>
-        <activity android:name=".TestImageControlActivity">
+        <activity android:name=".activity.TestImageControlActivity">
         </activity>
-        <activity android:name=".PhotoViewActivity">
+        <activity android:name=".activity.MatrixActivity">
         </activity>
-        <activity android:name=".MatrixActivity">
+        <activity android:name=".activity.WebViewActivity">
         </activity>
-        <activity android:name=".WebViewActivity">
-        </activity>
-        <activity android:name=".ImageActivity">
+        <activity android:name=".activity.ImageActivity">
 
         </activity>
-        <activity android:name=".SpannableActivity">
+        <activity android:name=".activity.SpannableActivity">
         </activity>
-        <activity android:name=".BlurActivity">
+        <activity android:name=".activity.BlurActivity">
         </activity>
-        <activity android:name=".GestureActivity">
+        <activity android:name=".activity.GestureActivity">
         </activity>
-        <activity android:name=".ScreenShotActivity">
+        <activity android:name=".activity.ScreenShotActivity">
         </activity>
     </application>
 

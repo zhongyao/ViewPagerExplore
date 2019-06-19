@@ -1,9 +1,9 @@
-package com.hongri.viewpager.jsinterface;
+package com.hongri.viewpager.jsapi;
 
 import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
-import com.hongri.viewpager.ViewPagerActivity;
+import com.hongri.viewpager.activity.ViewPagerActivity;
 
 /**
  * @author zhongyao

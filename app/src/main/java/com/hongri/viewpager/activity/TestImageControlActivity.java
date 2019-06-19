@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ToastUtil;
 import com.hongri.viewpager.widget.CustomImageView;

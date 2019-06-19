@@ -1,10 +1,11 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.BitmapUtil;
 import com.hongri.viewpager.util.FastBlur;
 import com.hongri.viewpager.util.Logger;

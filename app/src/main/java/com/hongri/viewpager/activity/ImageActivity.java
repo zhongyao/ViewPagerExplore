@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -12,9 +12,13 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.BitmapUtil;
 import com.hongri.viewpager.util.Logger;
 
+/**
+ * ImageView属性Activity
+ */
 public class ImageActivity extends Activity {
 
     private ImageView image_view;

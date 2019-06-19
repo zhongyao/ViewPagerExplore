@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
+import com.hongri.viewpager.R;
+import com.hongri.viewpager.callback.STPhotoSaveCallBack;
 import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ScreenShotUtil;
@@ -15,6 +16,7 @@ import com.hongri.viewpager.util.ToastUtil;
 
 /**
  * @author zhongyao
+ * 截屏Activity
  */
 public class ScreenShotActivity extends Activity implements View.OnClickListener,STPhotoSaveCallBack {
 

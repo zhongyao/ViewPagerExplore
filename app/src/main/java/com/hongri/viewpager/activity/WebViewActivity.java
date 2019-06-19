@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.hongri.viewpager.jsinterface.MyJavascriptInterface;
+import com.hongri.viewpager.R;
+import com.hongri.viewpager.jsapi.MyJavascriptInterface;
 import com.hongri.viewpager.util.DataUtil;
 
 /**
  * @author hongri
+ * WebView相关Activity
  * 参考：https://www.jb51.net/article/106272.htm
  */
 public class WebViewActivity extends AppCompatActivity {

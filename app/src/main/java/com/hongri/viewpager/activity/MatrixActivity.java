@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import java.util.Arrays;
 
@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ResHelper;
 

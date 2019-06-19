@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.DeviceOpenGLUtil;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.widget.BigImageView;
 
+/**
+ * 超长(大)图Activity
+ */
 public class LongImageActivity extends AppCompatActivity {
 
     private ImageView mImageView;

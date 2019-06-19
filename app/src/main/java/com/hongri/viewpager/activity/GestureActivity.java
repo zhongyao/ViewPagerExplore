@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.Logger;
 
 /**
  * @author hongri
+ * 手势处理Activity
  */
 public class GestureActivity extends AppCompatActivity implements OnTouchListener{
 

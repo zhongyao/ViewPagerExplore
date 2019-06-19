@@ -1,4 +1,4 @@
-package com.hongri.viewpager.Interface;
+package com.hongri.viewpager.callback;
 
 /**
  * @author zhongyao

@@ -15,7 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import com.hongri.viewpager.Interface.STPhotoSaveCallBack;
+import com.hongri.viewpager.callback.STPhotoSaveCallBack;
 
 /**
  * @author zhongyao

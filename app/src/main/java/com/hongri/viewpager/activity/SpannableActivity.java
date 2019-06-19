@@ -1,4 +1,4 @@
-package com.hongri.viewpager;
+package com.hongri.viewpager.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,9 +6,11 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.SubscriptSpan;
 import android.widget.TextView;
+import com.hongri.viewpager.R;
 
 /**
  * @author hongri
+ * SpannableStringBuilder调研Activity
  */
 public class SpannableActivity extends AppCompatActivity {
 

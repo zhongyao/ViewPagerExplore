@@ -64,7 +64,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     /**
      * 使用的ImageView数量
      */
-    public static final int IMAGE_VIEW_COUNT = 3;
+    public static final int IMAGE_VIEW_COUNT = 4;
     private int mCurrentPosition = 0;
     private static final String TAG = ViewPagerActivity.class.getSimpleName();
     private int mViewIndex;
@@ -282,5 +282,14 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         //DisplayUtil.getPhoneInfo((Activity)mContext, MyApplication.appContext);
         DisplayUtil.getPhoneInfo(activity, MyApplication.appContext);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mViewLists != null) {
+            mViewLists.clear();
+            mViewLists = null;
+        }
     }
 }

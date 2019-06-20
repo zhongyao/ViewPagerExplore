@@ -18,4 +18,4 @@
 
 优化内容：
 优化前为每张图片均创建一个ImageView，假如加载一百张图片的时候，会生成一百张ImageView，无疑造成了资源浪费。
-优化后只会创建3个ImageView，然后进行ImageView重用，大大减少了内存消耗。
+优化后只会创建4个ImageView，然后进行ImageView重用，大大减少了内存消耗。

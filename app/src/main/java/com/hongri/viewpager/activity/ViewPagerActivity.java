@@ -40,22 +40,31 @@ import com.hongri.viewpager.widget.PhotoViewPager;
 
 /**
  * @author hongri
- *         参考：https://www.jb51.net/article/106272.htm
+ * 参考：https://www.jb51.net/article/106272.htm
  *
- *         请参考大图模式：
- *         https://github.com/davemorrissey/subsampling-scale-image-view
+ * 请参考大图模式：
+ * https://github.com/davemorrissey/subsampling-scale-image-view
  */
 public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveCallBack {
 
-    private PhotoViewPager viewPager;
-    private MyPagerAdapter adapter;
-    private LinearLayout indicatorContainer;
-    private ArrayList<View> dataLists = new ArrayList<>();
+    private PhotoViewPager mViewPager;
+    private MyPagerAdapter mAdapter;
+    private LinearLayout mIndicatorContainer;
+    private ArrayList<View> mViewLists = new ArrayList<>();
     private CustomPhotoView mImageView;
     private TextView mTextView;
-    private final int IMAGE_SIZE = 5;
+    /**
+     * 要加载的图片数量
+     */
+    private final int IMAGE_URL_COUNT = DataUtil.getImageUrls().length;
+
+    /**
+     * 使用的ImageView数量
+     */
+    public static final int IMAGE_VIEW_COUNT = 3;
     private int mCurrentPosition = 0;
     private static final String TAG = ViewPagerActivity.class.getSimpleName();
+    private int mViewIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,45 +72,16 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //if (getSupportActionBar() != null) {
-        //    getSupportActionBar().hide();
-        //}
-
-        String phoneInfo = "Product: " + android.os.Build.PRODUCT + "\n";
-        phoneInfo += "CPU_ABI: " + android.os.Build.CPU_ABI + "\n";
-        phoneInfo += "TAGS: " + android.os.Build.TAGS + "\n";
-        phoneInfo += "VERSION_CODES.BASE: "
-            + android.os.Build.VERSION_CODES.BASE + "\n";
-        phoneInfo += "MODEL: " + android.os.Build.MODEL + "\n";
-        phoneInfo += "SDK: " + android.os.Build.VERSION.SDK + "\n";
-        phoneInfo += "VERSION.RELEASE: " + android.os.Build.VERSION.RELEASE
-            + "\n";
-        phoneInfo += "DEVICE: " + android.os.Build.DEVICE + "\n";
-        phoneInfo += "DISPLAY: " + android.os.Build.DISPLAY + "\n";
-        phoneInfo += "BRAND: " + android.os.Build.BRAND + "\n";
-        phoneInfo += "BOARD: " + android.os.Build.BOARD + "\n";
-        phoneInfo += "FINGERPRINT: " + android.os.Build.FINGERPRINT + "\n";
-        phoneInfo += "ID: " + android.os.Build.ID + "\n";
-        phoneInfo += "MANUFACTURER: " + android.os.Build.MANUFACTURER + "\n";
-
-        Logger.d("phoneInfo:" + phoneInfo);
 
         setContentView(R.layout.activity_view_pager);
 
-        //WindowManager.LayoutParams lp = getWindow().getAttributes();
-        //lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
-        //getWindow().setAttributes(lp);
-
-
-        //DisplayCutout cutout = new DisplayCutout(this);
-
-        viewPager = findViewById(R.id.viewPager);
-        indicatorContainer = findViewById(R.id.indicatorContainer);
+        mViewPager = findViewById(R.id.viewPager);
+        mIndicatorContainer = findViewById(R.id.indicatorContainer);
 
         /**
-         * 添加图片资源
+         * 生成ImageView
          */
-        for (int i = 0; i < IMAGE_SIZE; i++) {
+        for (int i = 0; i < IMAGE_VIEW_COUNT; i++) {
             mImageView = new CustomPhotoView(this);
             LayoutParams mImageParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             mImageView.setLayoutParams(mImageParams);
@@ -110,7 +90,6 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
             drawable.setAlpha(255);
             drawable.setShape(GradientDrawable.RECTANGLE);
             mImageView.setBackground(drawable);
-            mImageView.setImageResource(DataUtil.getImageResource()[i]);
             if (i == 2) {
                 mImageView.setScaleType(ScaleType.FIT_CENTER);
             } else {
@@ -124,7 +103,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
             mImageView.setOnMatrixChangeListener(new PhotoOnMatrixChangedListener());
 
-            dataLists.add(mImageView);
+            mViewLists.add(mImageView);
         }
 
         /**
@@ -137,21 +116,21 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         mTextView.setLayoutParams(mTextParams);
         mTextView.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         mTextView.setTextColor(Color.GREEN);
-        mTextView.setText(DataUtil.getDescriptions()[0]);
+        mTextView.setText("描述");
         mTextView.setOnClickListener(new TextOnClickListener());
         GradientDrawable gradientDrawable = new GradientDrawable(Orientation.TOP_BOTTOM,
             new int[] {ResHelper.getColor(R.integer.alpha_3, R.color.default_gray),
                 ResHelper.getColor(R.integer.alpha_100, R.color.default_gray)});
-        indicatorContainer.addView(mTextView);
-        indicatorContainer.setBackgroundDrawable(gradientDrawable);
+        mIndicatorContainer.addView(mTextView);
+        mIndicatorContainer.setBackgroundDrawable(gradientDrawable);
         //或使用xml文件定义
-        //indicatorContainer.setBackground(getResources().getDrawable(R.drawable.indicator_bg));
+        //mIndicatorContainer.setBackground(getResources().getDrawable(R.drawable.indicator_bg));
 
-        adapter = new MyPagerAdapter(this, dataLists);
+        mAdapter = new MyPagerAdapter(this, mViewLists, IMAGE_URL_COUNT, IMAGE_VIEW_COUNT);
 
-        viewPager.setAdapter(adapter);
-        //viewPager.setOffscreenPageLimit(3);
-        viewPager.addOnPageChangeListener(new OnPageChangeListener() {
+        mViewPager.setAdapter(mAdapter);
+        //mViewPager.setOffscreenPageLimit(3);
+        mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -163,11 +142,12 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
              */
             @Override
             public void onPageSelected(int position) {
-                mCurrentPosition = position;
-                CustomPhotoView mImageView = (CustomPhotoView)dataLists.get(position);
-                for (int i = 0; i < dataLists.size(); i++) {
-                    if (((ImageView)(dataLists.get(i))).getScaleType() != ScaleType.FIT_CENTER) {
-                        ((ImageView)(dataLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
+                mViewIndex = position % IMAGE_VIEW_COUNT;
+                mCurrentPosition = mViewIndex;
+                CustomPhotoView mImageView = (CustomPhotoView)mViewLists.get(mViewIndex);
+                for (int i = 0; i < mViewLists.size(); i++) {
+                    if (((ImageView)(mViewLists.get(i))).getScaleType() != ScaleType.FIT_CENTER) {
+                        ((ImageView)(mViewLists.get(i))).setScaleType(ScaleType.FIT_CENTER);
                     }
                 }
                 mImageView.setOnLongClickListener(new PhotoOnLongClickListener());
@@ -178,7 +158,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
 
                 mImageView.setOnMatrixChangeListener(new PhotoOnMatrixChangedListener());
 
-                mTextView.setText(DataUtil.getDescriptions()[position] + " 点击text保持图片");
+                mTextView.setText("点击text保存图片：" + position);
 
             }
 
@@ -193,17 +173,17 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseDown(event);
+                ((CustomImageView)(mViewLists.get(mCurrentPosition))).mouseDown(event);
                 break;
             //非第一个点按下
             case MotionEvent.ACTION_POINTER_DOWN:
-                ((CustomImageView)(dataLists.get(mCurrentPosition))).mousePointDown(event);
+                ((CustomImageView)(mViewLists.get(mCurrentPosition))).mousePointDown(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseMove(event);
+                ((CustomImageView)(mViewLists.get(mCurrentPosition))).mouseMove(event);
                 break;
             case MotionEvent.ACTION_UP:
-                ((CustomImageView)(dataLists.get(mCurrentPosition))).mouseUp();
+                ((CustomImageView)(mViewLists.get(mCurrentPosition))).mouseUp();
                 break;
 
             default:
@@ -228,13 +208,13 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         public void onClick(View v) {
 
             if (mCurrentPosition != 3) {
-                ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
+                ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)mViewLists.get(
                     mCurrentPosition))
                     .getDrawable()), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
             } else {
-                ImageUtil.saveGif2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)dataLists.get(
+                ImageUtil.saveGif2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)mViewLists.get(
                     mCurrentPosition))
-                        .getDrawable()), ((CustomPhotoView)dataLists.get(mCurrentPosition)).getBytes(),
+                        .getDrawable()), ((CustomPhotoView)mViewLists.get(mCurrentPosition)).getBytes(),
                     DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
             }
         }

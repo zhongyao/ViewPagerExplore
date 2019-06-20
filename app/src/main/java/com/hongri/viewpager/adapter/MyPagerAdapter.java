@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.hongri.viewpager.photoview.PhotoView;
 import com.hongri.viewpager.util.DataUtil;
-import com.hongri.viewpager.util.HttpUtil;
-import com.hongri.viewpager.widget.CustomPhotoView;
-
-import static com.hongri.viewpager.util.DataUtil.getImageUrls;
+import com.hongri.viewpager.util.Logger;
 
 /**
  * @author zhongyao
@@ -21,16 +18,21 @@ import static com.hongri.viewpager.util.DataUtil.getImageUrls;
 
 public class MyPagerAdapter extends PagerAdapter {
     private Context mContext;
-    private ArrayList<View> mDataLists;
+    private ArrayList<View> mViewLists;
+    private int mImageUrlCount;
+    private int mImageViewCount;
+    private int mImageViewIndex;
 
-    public MyPagerAdapter(Context context, ArrayList<View> dataLists) {
+    public MyPagerAdapter(Context context, ArrayList<View> dataLists, int imageUrlCount, int imageViewCount) {
         mContext = context;
-        mDataLists = dataLists;
+        mViewLists = dataLists;
+        mImageUrlCount = imageUrlCount;
+        mImageViewCount = imageViewCount;
     }
 
     @Override
     public int getCount() {
-        return (mDataLists != null && mDataLists.size() > 0) ? mDataLists.size() : 0;
+        return mImageUrlCount > 0 ? mImageUrlCount : 0;
     }
 
     @Override
@@ -41,15 +43,20 @@ public class MyPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         //方式一：使用Glide加载Gif图片（较慢 需要3-5s的时间）
-        // Glide.with(mContext).load(DataUtil.getImageUrls()[position]).placeholder(R.drawable.ic_launcher_background).override(800, 800).into((PhotoView)mDataLists.get(position));
+        // Glide.with(mContext).load(DataUtil.getImageUrls()[position]).placeholder(R.drawable
+        // .ic_launcher_background).override(800, 800).into((PhotoView)mViewLists.get(position));
         //方式二：使用地方开源库android-gif-drawable 用普通的下载方式，通过输入流等方式创建GifDrawable
-        if (position == 3){
-            HttpUtil.DownLoadImage(position, getImageUrls()[position],(CustomPhotoView)mDataLists.get(position));
-        }else {
-            Glide.with(mContext).load(DataUtil.getImageUrls()[position]).into((PhotoView)mDataLists.get(position));
-        }
-        container.addView(mDataLists.get(position));
-        return mDataLists.get(position);
+
+        Logger.d("instantiateItem:" + position);
+
+        mImageViewIndex = position % mImageViewCount;
+        //if (position == 3) {
+        //    HttpUtil.DownLoadImage(position, getImageUrls()[position], (CustomPhotoView)mViewLists.get(position));
+        //} else {
+        Glide.with(mContext).load(DataUtil.getImageUrls()[position]).into((PhotoView)mViewLists.get(mImageViewIndex));
+        //}
+        container.addView(mViewLists.get(mImageViewIndex));
+        return mViewLists.get(mImageViewIndex);
     }
 
     @Override
@@ -59,6 +66,8 @@ public class MyPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mDataLists.get(position));
+        Logger.d("destroyItem:" + position);
+        mImageViewIndex = position % mImageViewCount;
+        container.removeView(mViewLists.get(mImageViewIndex));
     }
 }

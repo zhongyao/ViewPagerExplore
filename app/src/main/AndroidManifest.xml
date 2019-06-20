@@ -22,11 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activity.LongImageActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <!--
         <meta-data
@@ -36,7 +32,11 @@
         <activity
             android:name=".activity.ViewPagerActivity"
             android:theme="@style/translucentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activity.TestImageControlActivity">
         </activity>

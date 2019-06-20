@@ -44,6 +44,9 @@ import com.hongri.viewpager.widget.PhotoViewPager;
  *
  * 请参考大图模式：
  * https://github.com/davemorrissey/subsampling-scale-image-view
+ *
+ * ImageView重用：
+ * https://blog.csdn.net/hqiong208/article/details/53908002
  */
 public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveCallBack {
 

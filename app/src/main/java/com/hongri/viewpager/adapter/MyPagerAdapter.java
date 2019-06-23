@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.hongri.viewpager.photoview.PhotoView;
 import com.hongri.viewpager.util.DataUtil;
 import com.hongri.viewpager.util.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author zhongyao
@@ -69,5 +71,12 @@ public class MyPagerAdapter extends PagerAdapter {
         Logger.d("destroyItem:" + position);
         mImageViewIndex = position % mImageViewCount;
         container.removeView(mViewLists.get(mImageViewIndex));
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("hh","dddd");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

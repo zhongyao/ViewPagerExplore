@@ -43,7 +43,7 @@ public class BitmapUtil {
      * ALPHA_8:表示8位Alpha位图，没有颜色,只有透明度，占用一个字节。
      * ARGB_4444:表示16位ARGB位图，占用两个字节。
      * ARGB_8888:表示32位ARGB位图，占用四个字节。
-     * RBG_565:表示16位RGB位图，没有透明度，占用连个字节。
+     * RBG_565:表示16位RGB位图，没有透明度，占用八个字节。
      *
      * 1、质量压缩
      * 2、采样率压缩
@@ -68,6 +68,7 @@ public class BitmapUtil {
         bitmap.compress(CompressFormat.JPEG, 100, baos);
         bytes = baos.toByteArray();
         int quality = 100;
+        //Log打印--压缩前
         forBitmapPressedLog(0, bitmap, bytes, quality);
         while (baos.toByteArray().length / 1024 > maxSize && quality > 20) {
             //清空baos
@@ -80,6 +81,7 @@ public class BitmapUtil {
 
         bytes = baos.toByteArray();
         bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        //Log打印--压缩前
         forBitmapPressedLog(1, bitmap, bytes, quality);
         return bitmap;
 
@@ -123,6 +125,7 @@ public class BitmapUtil {
         options.inSampleSize = inSampleSize;
 
         Bitmap afterBitmap = BitmapFactory.decodeResource(res, resId, options);
+        //Log打印
         forBitmapPressedLog(1, afterBitmap, null, -1);
         return afterBitmap;
     }
@@ -131,10 +134,12 @@ public class BitmapUtil {
      * 3、缩放法压缩
      */
     public static Bitmap pressBitmapInScale(Bitmap bitmap, float widthScale, float heightScale) {
+        //Log打印
         forBitmapPressedLog(0, bitmap, null, -1);
         Matrix matrix = new Matrix();
         matrix.setScale(widthScale, heightScale);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        //Log打印
         forBitmapPressedLog(1, bitmap, null, -1);
         return bitmap;
     }
@@ -143,10 +148,12 @@ public class BitmapUtil {
      * 4、RGB_565法
      */
     public static Bitmap pressBitmapInRGB(Bitmap bitmap, Resources res, int resId) {
+        //Log打印--缩放前
         forBitmapPressedLog(0, bitmap, null, -1);
         Options options = new Options();
         options.inPreferredConfig = Config.RGB_565;
         bitmap = BitmapFactory.decodeResource(res, resId, options);
+        //Log打印--缩放后
         forBitmapPressedLog(1, bitmap, null, -1);
         return bitmap;
     }
@@ -158,6 +165,7 @@ public class BitmapUtil {
     public static Bitmap pressBitmapInScaledBitmap(Bitmap bitmap) {
         forBitmapPressedLog(0, bitmap, null, -1);
         bitmap = Bitmap.createScaledBitmap(bitmap, 192 * 1, 108 * 1, true);
+        //Log打印
         forBitmapPressedLog(1, bitmap, null, -1);
         return bitmap;
     }

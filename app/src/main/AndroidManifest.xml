@@ -3,6 +3,10 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.hongri.viewpager">
 
+    <!--**应用最终打包试用的是applicationId，而不是package，前者会将后者覆盖掉。
+        **package作用有两个：
+        1、在package指定的目录下，生成对应的R.java文件。
+        2、在package指定的目录下，引用对应的activity、server组件（如.MyApplication）-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

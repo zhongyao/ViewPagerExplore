@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#混淆文档
+#http://www.shaoyance.com/2018/09/17/Android-%E6%B7%B7%E6%B7%86%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/

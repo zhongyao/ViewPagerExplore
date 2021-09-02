@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.hongri.viewpager.longimage.MoveGestureDetector;
 
@@ -61,11 +62,13 @@ public class BigImageView extends AppCompatImageView {
                 int moveY = (int)detector.getMoveY();
 
                 if (mImageWidth > getWidth()) {
+                    Log.d(TAG, "mImageWidth:" + mImageWidth + " getWidth():" + getWidth() + " -moveX" + (-moveX));
                     mRect.offset(-moveX, 0);
                     checkWidth();
                     invalidate();
                 }
                 if (mImageHeight > getHeight()) {
+                    Log.d(TAG, "mImageHeight:" + mImageHeight + " getHeight():" + getHeight() + " -moveY:" + (-moveY));
                     mRect.offset(0, -moveY);
                     checkHeight();
                     invalidate();
@@ -81,6 +84,7 @@ public class BigImageView extends AppCompatImageView {
             mRegionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
             mImageWidth = mRegionDecoder.getWidth();
             mImageHeight = mRegionDecoder.getHeight();
+            Log.d(TAG, "mImageWidth:" + mImageWidth + " mImageHeight:" + mImageHeight);
 
             requestLayout();
             invalidate();
@@ -105,6 +109,7 @@ public class BigImageView extends AppCompatImageView {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
 
+        Log.d(TAG, "onMeasure--->width:" + width + " height:" + height);
         int imageWidth = mImageWidth;
         int imageHeight = mImageHeight;
 
@@ -124,6 +129,7 @@ public class BigImageView extends AppCompatImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Log.d(TAG, "onDraw");
         if (mRegionDecoder != null) {
             Bitmap bitmap = mRegionDecoder.decodeRegion(mRect, sOptions);
             canvas.drawBitmap(bitmap, 0, 0, null);
@@ -158,6 +164,7 @@ public class BigImageView extends AppCompatImageView {
         int imageHeight = mImageHeight;
 
         if (rect.bottom > imageHeight) {
+            Log.d(TAG, "rect.bottom:" + rect.bottom + " imageHeight:" + imageHeight);
             rect.bottom = imageHeight;
             rect.top = imageHeight - getHeight();
         }

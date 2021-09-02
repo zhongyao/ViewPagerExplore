@@ -149,10 +149,10 @@ public class BaseGestureDetector implements GestureDetector {
                         if (Math.abs(mDragedDistanceY) > PhotoViewAttacher.ALPHA_CHANGE_TIME) {
                             if (mDragedDistanceY > 0) {
                                 //下滑
-                                mListener.onDragRelease(true, PhotoViewAttacher.SCREEM_HEIGHT - mDragedDistanceY, 0);
+                                mListener.onDragRelease(true, PhotoViewAttacher.SCREEN_HEIGHT - mDragedDistanceY, 0);
                             } else {
                                 //上滑
-                                mListener.onDragRelease(true, -(PhotoViewAttacher.SCREEM_HEIGHT + mDragedDistanceY), 0);
+                                mListener.onDragRelease(true, -(PhotoViewAttacher.SCREEN_HEIGHT + mDragedDistanceY), 0);
                             }
                         } else {
                             mListener.onDragRelease(false, -mDragedDistanceY, 0);

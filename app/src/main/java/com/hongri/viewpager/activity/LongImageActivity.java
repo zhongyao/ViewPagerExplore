@@ -10,7 +10,9 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
@@ -21,6 +23,12 @@ import com.hongri.viewpager.widget.BigImageView;
 
 /**
  * 超长(大)图Activity
+ *
+ * 备注：
+ * 1、大长图加载时 高度(或宽度)超过GPU texture时，会报"Bitmap too large to be uploaded into a texture"异常，图片黑屏无法显示。
+ * 这种情况，在【低端手机】如锤子7.1系统上才有；测试的10.0 9.0系统手机不存在该问题，猜测可能是高版本系统已将此问题修复。
+ *
+ * 2、开启硬件加速时，View.isHardwareAccelerated在某些情况下打印值为false。可通过延迟打印正确值。此情况不影响正常渲染效果。
  */
 public class LongImageActivity extends AppCompatActivity {
 
@@ -48,12 +56,12 @@ public class LongImageActivity extends AppCompatActivity {
         //在View层开启软解，View层开启的软解，只能打开不能关闭，即如果打开软解了，便不可以再打开硬解。
         //mImageView.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
         //判断当前View是软解还是硬解
-        Logger.d("isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
+        Logger.d("onCreate ---> isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
 
         /**
          * 图片分开加载的一个简单测试
          */
-        testImageRegionDecoder();
+//        testImageRegionDecoder();
         /**
          * 加载原图
          */
@@ -62,12 +70,38 @@ public class LongImageActivity extends AppCompatActivity {
         /**
          * 使用分块加载方式加载超大图
          */
-        regionDecoderBigImage();
+//        regionDecoderBigImage();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Logger.d("onAttachedToWindow ---> isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Logger.d("onResume ---> isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Logger.d("onPause ---> isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logger.d("onDestroy ---> isHardwareAccelerated:" + mImageView.isHardwareAccelerated());
     }
 
     private void testImageRegionDecoder() {
         try {
 
+            mImageView.setVisibility(View.VISIBLE);
+            mBigImageView.setVisibility(View.GONE);
             /**
              * 获得图片的宽高
              */
@@ -95,6 +129,8 @@ public class LongImageActivity extends AppCompatActivity {
 
     private void loadOriginalBigImage() {
         try {
+            mImageView.setVisibility(View.VISIBLE);
+            mBigImageView.setVisibility(View.GONE);
             InputStream inputStream = getAssets().open(LONG_IMAGE_APP);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Config.ARGB_8888;
@@ -112,6 +148,8 @@ public class LongImageActivity extends AppCompatActivity {
     }
 
     private void regionDecoderBigImage() {
+        mImageView.setVisibility(View.GONE);
+        mBigImageView.setVisibility(View.VISIBLE);
         InputStream inputStream;
         try {
             inputStream = getAssets().open(LONG_IMAGE_APP);

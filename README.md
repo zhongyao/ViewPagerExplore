@@ -27,5 +27,19 @@
 优化后只会创建4个ImageView，然后进行ImageView重用，大大减少了内存消耗。
 
 
+#### 备注：
+1、大长图加载时 高度(或宽度)超过GPU texture时，会报"Bitmap too large to be uploaded into a texture"异常，图片黑屏无法显示。
+   这种情况，在【低端手机】如锤子7.1系统上才有；测试的10.0 9.0系统手机不存在该问题，猜测可能是高版本系统已将此问题修复。
+   
+2、开启硬件加速时，View.isHardwareAccelerated在某些情况下打印值为false。可通过延迟打印正确值。此情况不影响正常渲染效果。
+
+
 
 #### 如果需要查看图片压缩相关的知识点，请查阅BitmapUtil工具类，这里做了详细的说明。
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+### 可参考：https://github.com/davemorrissey/subsampling-scale-image-view

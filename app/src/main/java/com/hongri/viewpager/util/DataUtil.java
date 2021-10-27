@@ -10,7 +10,7 @@ import com.hongri.viewpager.R;
  */
 
 public class DataUtil {
-    private static int[] images = {R.drawable.icon1, R.drawable.icon2, R.drawable.icon3, R.drawable.long_pic,
+    private static int[] images = {R.drawable.icon1, R.drawable.long_image_app, R.drawable.icon2, R.drawable.icon3, R.drawable.long_pic,
         R.drawable.bird};
 
     private static String[] descriptions = {"描述一", "描述二", "描述三", "描述四", "描述五"};

@@ -123,7 +123,7 @@ public class BigImageView extends AppCompatImageView {
         mRect.left = 0;
         mRect.top = 0;
         mRect.right = mRect.left + 1080;
-        mRect.bottom = mRect.top + height;
+        mRect.bottom = mRect.top + 2000;
     }
 
     @Override

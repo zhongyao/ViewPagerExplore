@@ -59,7 +59,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
     /**
      * 要加载的图片数量
      */
-    private final int IMAGE_URL_COUNT = DataUtil.getImageUrls().length;
+    private final int IMAGE_URL_COUNT = DataUtil.getImageResource().length;
 
     /**
      * 使用的ImageView数量
@@ -213,12 +213,12 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
             if (mCurrentPosition != 3) {
                 ImageUtil.saveBmp2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)mViewLists.get(
                     mCurrentPosition))
-                    .getDrawable()), DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+                    .getDrawable()), String.valueOf(DataUtil.getImageResource()[mCurrentPosition]), ViewPagerActivity.this);
             } else {
                 ImageUtil.saveGif2Gallery(ViewPagerActivity.this, ImageUtil.drawableToBitmap(((ImageView)mViewLists.get(
                     mCurrentPosition))
                         .getDrawable()), ((CustomPhotoView)mViewLists.get(mCurrentPosition)).getBytes(),
-                    DataUtil.getImageUrls()[mCurrentPosition], ViewPagerActivity.this);
+                    String.valueOf(DataUtil.getImageResource()[mCurrentPosition]), ViewPagerActivity.this);
             }
         }
     }
@@ -254,7 +254,7 @@ public class ViewPagerActivity extends AppCompatActivity implements STPhotoSaveC
         @Override
         public void onScrollExit() {
             Logger.d("onScrollExit");
-            finish();
+//            finish();
         }
     }
 

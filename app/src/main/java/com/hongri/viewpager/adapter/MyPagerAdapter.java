@@ -3,12 +3,16 @@ package com.hongri.viewpager.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.hongri.viewpager.photoview.PhotoView;
 import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.util.ImageUtil;
 import com.hongri.viewpager.util.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +23,7 @@ import org.json.JSONObject;
  */
 
 public class MyPagerAdapter extends PagerAdapter {
+    private final String TAG = "MyPagerAdapter";
     private Context mContext;
     private ArrayList<View> mViewLists;
     private int mImageUrlCount;
@@ -43,7 +48,7 @@ public class MyPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         //方式一：使用Glide加载Gif图片（较慢 需要3-5s的时间）
         // Glide.with(mContext).load(DataUtil.getImageUrls()[position]).placeholder(R.drawable
         // .ic_launcher_background).override(800, 800).into((PhotoView)mViewLists.get(position));
@@ -55,7 +60,13 @@ public class MyPagerAdapter extends PagerAdapter {
         //if (position == 3) {
         //    HttpUtil.DownLoadImage(position, getImageUrls()[position], (CustomPhotoView)mViewLists.get(position));
         //} else {
-        Glide.with(mContext).load(DataUtil.getImageUrls()[position]).into((PhotoView)mViewLists.get(mImageViewIndex));
+//        Glide.with(mContext).load(DataUtil.getImageUrls()[position]).into((PhotoView)mViewLists.get(mImageViewIndex));
+        Bitmap bitmap = ImageUtil.drawableToBitmap(mContext.getResources().getDrawable(DataUtil.getImageResource()[position]));
+        int height = ((PhotoView) mViewLists.get(mImageViewIndex)).getHeight();
+        Log.d(TAG, "ViewHeight:" + height + " bmpWidth:" + bitmap.getWidth() + " bmpHeight:" + bitmap.getHeight() + " isHardwareAccelerated:" + ((PhotoView) mViewLists.get(mImageViewIndex)).isHardwareAccelerated());
+        ((PhotoView) mViewLists.get(mImageViewIndex)).setImageBitmap(bitmap);
+
+
         //}
         container.addView(mViewLists.get(mImageViewIndex));
         return mViewLists.get(mImageViewIndex);

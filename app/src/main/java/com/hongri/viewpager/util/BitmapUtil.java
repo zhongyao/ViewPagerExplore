@@ -15,6 +15,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Matrix;
+import android.media.MediaMetadataRetriever;
 
 /**
  * 参考：
@@ -286,6 +287,30 @@ public class BitmapUtil {
             return null;
         }
 
+        return bitmap;
+    }
+
+    /**
+     * 获取视频缩略图
+     *
+     * @param filePath
+     * @return bitmap
+     */
+    public static Bitmap getVideoThumbnail(String filePath) {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            retriever.setDataSource(filePath);
+            bitmap = retriever.getFrameAtTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                retriever.release();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
         return bitmap;
     }
 

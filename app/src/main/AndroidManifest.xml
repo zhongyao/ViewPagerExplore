@@ -27,6 +27,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.ThumbnailActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.CanvasActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,11 +42,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LongImageActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <!--
         <meta-data
@@ -58,14 +68,14 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".activity.TestImageControlActivity"></activity>
-        <activity android:name=".activity.MatrixActivity"></activity>
-        <activity android:name=".activity.WebViewActivity"></activity>
-        <activity android:name=".activity.ImageActivity"></activity>
-        <activity android:name=".activity.SpannableActivity"></activity>
-        <activity android:name=".activity.BlurActivity"></activity>
-        <activity android:name=".activity.GestureActivity"></activity>
-        <activity android:name=".activity.ScreenShotActivity"></activity>
+        <activity android:name=".activity.TestImageControlActivity" />
+        <activity android:name=".activity.MatrixActivity" />
+        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.ImageActivity" />
+        <activity android:name=".activity.SpannableActivity" />
+        <activity android:name=".activity.BlurActivity" />
+        <activity android:name=".activity.GestureActivity" />
+        <activity android:name=".activity.ScreenShotActivity" />
     </application>
 
 </manifest>

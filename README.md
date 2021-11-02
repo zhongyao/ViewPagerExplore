@@ -35,7 +35,7 @@
 2、开启硬件加速时，View.isHardwareAccelerated在某些情况下打印值为false。可通过延迟打印正确值。此情况不影响正常渲染效果。
 
 <br></br>
-#### 新增画布Canvas示例【CanvasView中】
+#### 新增画布Canvas示例【CanvasView / CanvasView2中】
 参考-[Android 画布Canvas](http://wuxiaolong.me/2016/08/27/Canvas/)
 参考-[Android关于Canvas你所知道的和不知道的一切](https://juejin.cn/post/6844903705930629128)
 

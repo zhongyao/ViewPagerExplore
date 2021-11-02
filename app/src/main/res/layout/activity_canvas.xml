@@ -4,12 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.CanvasActivity">
 
     <com.hongri.viewpager.widget.CanvasView
         android:id="@+id/canvasView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorPrimaryDark"
+        android:visibility="gone" />
+
+    <com.hongri.viewpager.widget.CanvasView2
+        android:id="@+id/canvasView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/default_white" />
 
 </LinearLayout>

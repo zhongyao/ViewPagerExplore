@@ -2,9 +2,11 @@ package com.hongri.viewpager.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
+import android.support.annotation.XmlRes;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -21,6 +23,10 @@ public class CanvasView2 extends View {
     private Paint mGridPaint;//网格画笔
     private Point mWinSize;//屏幕尺寸
     private Point mCoo;//坐标系原点
+    private Paint mPointPaint;//点画笔
+    private Paint mLinePaint;//线画笔
+    private final String COLOR_RED = "#FF0000";
+    private Context mContext;
 
     public CanvasView2(Context context) {
         super(context);
@@ -38,11 +44,20 @@ public class CanvasView2 extends View {
     }
 
     private void init(Context context) {
+        mContext = context;
         //准备屏幕尺寸
         mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWinSize = new Point();
         mCoo = new Point(500, 500);
         DeviceUtil.loadWinSize(getContext(), mWinSize);
+
+        mPointPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPointPaint.setColor(Color.parseColor(COLOR_RED));
+        mPointPaint.setStrokeWidth(20);
+
+        mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLinePaint.setColor(Color.parseColor(COLOR_RED));
+        mLinePaint.setStrokeWidth(10);
     }
 
     @Override
@@ -59,7 +74,13 @@ public class CanvasView2 extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        HelpDraw.drawColor(canvas);
         HelpDraw.drawGrid(canvas, mWinSize, mGridPaint);
         HelpDraw.drawCoo(canvas, mCoo, mWinSize, mGridPaint);
+//        HelpDraw.drawPoint(canvas, mPointPaint);
+//        HelpDraw.drawLine(canvas, mLinePaint);
+//        HelpDraw.drawRect(canvas, mLinePaint);
+//        HelpDraw.drawLikeCircle(canvas, mLinePaint);
+        HelpDraw.drawBitmap(mContext, canvas, mLinePaint);
     }
 }

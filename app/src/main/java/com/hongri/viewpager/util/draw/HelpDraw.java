@@ -198,8 +198,9 @@ public class HelpDraw {
         RectF rectF = new RectF(300, 300, 300 + 640, 300 + 360);
 //        canvas.drawBitmap(bitmap, null, rectF, paint);
 
-        //4、图片裁剪出的矩形区域【图片适应于矩阵】
+        //4、图片裁剪出的矩形区域
         Rect rectSrc = new Rect(200, 200, 400, 400);
+        //【图片适应于矩阵】
         Rect rectDest = new Rect(300, 300, 399 + 640, 300 + 360);
         canvas.drawBitmap(bitmap, rectSrc, rectDest, paint);
 

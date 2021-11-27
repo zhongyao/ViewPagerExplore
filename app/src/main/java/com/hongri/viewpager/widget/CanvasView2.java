@@ -81,6 +81,7 @@ public class CanvasView2 extends View {
 //        HelpDraw.drawLine(canvas, mLinePaint);
 //        HelpDraw.drawRect(canvas, mLinePaint);
 //        HelpDraw.drawLikeCircle(canvas, mLinePaint);
-        HelpDraw.drawBitmap(mContext, canvas, mLinePaint);
+//        HelpDraw.drawBitmap(mContext, canvas, mLinePaint);
+        HelpDraw.drawPicture(canvas, mLinePaint);
     }
 }

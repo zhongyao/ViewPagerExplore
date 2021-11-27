@@ -10,6 +10,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PathEffect;
+import android.graphics.Picture;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -181,6 +182,12 @@ public class HelpDraw {
         canvas.drawArc(rectArc, 0, 90, true, paint);
     }
 
+    /**
+     * 绘制图片
+     * @param context
+     * @param canvas
+     * @param paint
+     */
     public static void drawBitmap(Context context, Canvas canvas, Paint paint) {
         //1、定点绘制图片
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bird);
@@ -203,7 +210,41 @@ public class HelpDraw {
         //【图片适应于矩阵】
         Rect rectDest = new Rect(300, 300, 399 + 640, 300 + 360);
         canvas.drawBitmap(bitmap, rectSrc, rectDest, paint);
-
     }
 
+    /**
+     * Picture的运用【注： 对于大多数的内容，从picture绘制都要比相应的API要快速，因为picture的展现不会招致方法调用开销
+     *  在API级别23之前，无法在硬件加速画布上展示Picture】
+     * @param canvas
+     * @param paint
+     */
+    public static void drawPicture(Canvas canvas, Paint paint) {
+        //
+//        canvas.drawRect(100, 0, 200, 100, paint);
+//        canvas.drawRect(0, 100, 100, 200, paint);
+//        canvas.drawRect(200, 100, 300, 200, paint);
+
+        //创建Picture对象
+        Picture picture = new Picture();
+        //确定picture产生的Canvas元件的大小，并生成Canvas元件
+        Canvas recodingCanvas = picture.beginRecording(canvas.getWidth(), canvas.getHeight());
+        //Canvas元件的操作
+        recodingCanvas.drawRect(100, 0, 200, 100, paint);
+        recodingCanvas.drawRect(0, 100, 100, 200, paint);
+        recodingCanvas.drawRect(200, 100, 300, 200, paint);
+        //Canvas元件绘制结束
+        picture.endRecording();
+
+        canvas.save();
+        canvas.drawPicture(picture);
+        canvas.translate(0, 300);
+        picture.draw(canvas);
+
+        canvas.drawPicture(picture);
+        canvas.translate(350, 0);
+//        canvas.drawPicture(picture);
+        picture.draw(canvas);
+
+        canvas.restore();
+    }
 }

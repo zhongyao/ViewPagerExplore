@@ -247,4 +247,9 @@ public class HelpDraw {
 
         canvas.restore();
     }
+
+    public static void drawText(Canvas canvas, Paint paint) {
+        paint.setTextSize(100);
+        canvas.drawText("离离原上草，一岁一枯荣", 200, 200, paint);
+    }
 }

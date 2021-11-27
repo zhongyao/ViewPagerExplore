@@ -182,18 +182,26 @@ public class HelpDraw {
     }
 
     public static void drawBitmap(Context context, Canvas canvas, Paint paint) {
-        //定点绘制图片
+        //1、定点绘制图片
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bird);
 //        canvas.drawBitmap(bitmap, 500, 500, paint);
 
-        //变换矩阵绘制图片
+        //2、变换矩阵绘制图片
         Matrix matrix = new Matrix();
         matrix.setValues(new float[]{
                 1, 0.5f, 1500 * 3,
                 0, 1, 100 * 3,
                 0, 0, 3});
-        canvas.drawBitmap(bitmap, matrix, paint);
+//        canvas.drawBitmap(bitmap, matrix, paint);
 
+        //3、图片适用矩阵区域不裁剪
+        RectF rectF = new RectF(300, 300, 300 + 640, 300 + 360);
+//        canvas.drawBitmap(bitmap, null, rectF, paint);
+
+        //4、图片裁剪出的矩形区域【图片适应于矩阵】
+        Rect rectSrc = new Rect(200, 200, 400, 400);
+        Rect rectDest = new Rect(300, 300, 399 + 640, 300 + 360);
+        canvas.drawBitmap(bitmap, rectSrc, rectDest, paint);
 
     }
 

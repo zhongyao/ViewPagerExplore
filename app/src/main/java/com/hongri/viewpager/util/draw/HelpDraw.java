@@ -20,7 +20,7 @@ import com.hongri.viewpager.R;
 
 /**
  * Create by zhongyao on 2021/11/1
- * Description:
+ * Description:画布绘制基础图形
  */
 public class HelpDraw {
 

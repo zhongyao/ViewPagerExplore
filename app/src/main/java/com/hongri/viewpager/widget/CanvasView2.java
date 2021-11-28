@@ -77,10 +77,12 @@ public class CanvasView2 extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        //画布绘制坐标系
         HelpDraw.drawColor(canvas);
         HelpDraw.drawGrid(canvas, mWinSize, mGridPaint);
         HelpDraw.drawCoo(canvas, mCoo, mWinSize, mGridPaint);
 
+        //画布绘制基础图形
 //        HelpDraw.drawPoint(canvas, mPointPaint);
 //        HelpDraw.drawLine(canvas, mLinePaint);
 //        HelpDraw.drawRect(canvas, mLinePaint);

@@ -9,9 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import com.hongri.viewpager.util.DeviceUtil;
+import com.hongri.viewpager.util.draw.HelpClip;
 import com.hongri.viewpager.util.draw.HelpDraw;
+import com.hongri.viewpager.util.draw.HelpTransform;
 
 /**
  * Create by zhongyao on 2021/11/1
@@ -77,12 +80,24 @@ public class CanvasView2 extends View {
         HelpDraw.drawColor(canvas);
         HelpDraw.drawGrid(canvas, mWinSize, mGridPaint);
         HelpDraw.drawCoo(canvas, mCoo, mWinSize, mGridPaint);
+
 //        HelpDraw.drawPoint(canvas, mPointPaint);
 //        HelpDraw.drawLine(canvas, mLinePaint);
 //        HelpDraw.drawRect(canvas, mLinePaint);
 //        HelpDraw.drawLikeCircle(canvas, mLinePaint);
 //        HelpDraw.drawBitmap(mContext, canvas, mLinePaint);
 //        HelpDraw.drawPicture(canvas, mLinePaint);
-        HelpDraw.drawText(canvas, mLinePaint);
+//        HelpDraw.drawText(canvas, mLinePaint);
+
+        //画布变换
+//        HelpTransform.stateTest(canvas, mCoo, mLinePaint);
+//        HelpTransform.stateTestRotate(canvas, mCoo, mLinePaint);
+//        HelpTransform.stateTestTranslate(canvas, mCoo, mLinePaint);
+//        HelpTransform.stateTestScale(canvas, mCoo, mLinePaint);
+//        HelpTransform.stateTestSkew(canvas, mCoo, mLinePaint);
+
+        //画布裁剪
+//        HelpClip.clipInner(canvas, mLinePaint);
+        HelpClip.clipOuter(canvas, mLinePaint);
     }
 }

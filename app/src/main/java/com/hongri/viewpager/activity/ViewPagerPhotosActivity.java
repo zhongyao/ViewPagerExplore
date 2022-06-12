@@ -80,7 +80,7 @@ public class ViewPagerPhotosActivity extends AppCompatActivity implements STPhot
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_view_pager);
+        setContentView(R.layout.activity_view_pager_photos);
 
         mViewPager = findViewById(R.id.viewPager);
         mIndicatorContainer = findViewById(R.id.indicatorContainer);

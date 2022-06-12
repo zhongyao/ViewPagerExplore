@@ -3,51 +3,66 @@ package com.hongri.viewpager.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.hongri.viewpager.R;
+import com.hongri.viewpager.adapter.StableFragmentPagerAdapter;
+import com.hongri.viewpager.fragment.ItemFragment;
+import com.hongri.viewpager.util.DataUtil;
+import com.hongri.viewpager.widget.FlexibleViewPager;
 
 /**
  * ViewPager示例
  */
 public class ViewPagerActivity extends AppCompatActivity {
-    private ViewPager viewPager;
-    private List<String> title;
-    private List<View> content;
-    private LayoutInflater inflater;
-    private MyViewPagerAdapter adapter;
+    private FlexibleViewPager flexibleViewPager;
+    private final List<ItemFragment> fragments = new ArrayList<>();
+    private StableFragmentPagerAdapter fragmentPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_view_pager);
 
-        viewPager = findViewById(R.id.viewPager);
-        content = new ArrayList<>();
-        inflater = LayoutInflater.from(this);
+        flexibleViewPager = findViewById(R.id.viewPager);
         /**
          * 添加内容content
          */
-        content.add(inflater.inflate(R.layout.f1, null));
-        content.add(inflater.inflate(R.layout.f2, null));
-        content.add(inflater.inflate(R.layout.f3, null));
+        for (int i = 0; i < 3; i++) {
+            ItemFragment itemFragment = new ItemFragment();
+            itemFragment.setData(DataUtil.getArrayData(i));
+            itemFragment.setFragmentForPosition(flexibleViewPager, i);
+            fragments.add(itemFragment);
+        }
 
-        /**
-         * 添加每个内容对应的标题title
-         */
-        title = new ArrayList<>();
-        title.add("title1");
-        title.add("title2");
-        title.add("title3");
+        fragmentPagerAdapter = new StableFragmentPagerAdapter(getSupportFragmentManager());
+        fragmentPagerAdapter.setFragmentList(fragments);
+        flexibleViewPager.setAdapter(fragmentPagerAdapter);
+        flexibleViewPager.setOffscreenPageLimit(fragments.size() - 1);
+        fragmentPagerAdapter.notifyDataSetChanged();
+        //初始化第一个Item的高度
+        flexibleViewPager.resetHeight(0);
 
-        adapter = new MyViewPagerAdapter(this, content, title);
-        viewPager.setAdapter(adapter);
+        flexibleViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //每次选中item的时候，重置该item的高度
+                flexibleViewPager.resetHeight(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 }

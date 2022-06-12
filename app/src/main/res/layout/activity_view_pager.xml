@@ -1,41 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.hongri.viewpager.activity.ViewPagerPhotosActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <com.hongri.viewpager.widget.PhotoViewPager
+    <com.hongri.viewpager.widget.FlexibleViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:background="#ffffff" />
 
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pagerTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:visibility="gone"/>
-
-    </com.hongri.viewpager.widget.PhotoViewPager>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/indicatorContainer"
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</FrameLayout>
+</LinearLayout>

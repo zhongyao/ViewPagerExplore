@@ -51,7 +51,6 @@
 
 <br></br>
 <br></br>
-#######=================================================================================
 ## 以下是关于ViewPager的探索：
 ### ViewPager使用可直接参考--ViewPagerActivity：
 #### 自定义高度自适应ViewPager【FlexibleViewPager】

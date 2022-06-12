@@ -11,11 +11,13 @@ import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.DeviceOpenGLUtil;
 import com.hongri.viewpager.util.Logger;

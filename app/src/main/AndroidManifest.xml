@@ -27,20 +27,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.ThumbnailActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+        <activity android:name=".activity.ViewPager2Activity">
         </activity>
-        <activity android:name=".activity.CanvasActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".activity.ViewPagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.ThumbnailActivity">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name=".activity.CanvasActivity"
+            android:screenOrientation="landscape">
         </activity>
         <activity android:name=".activity.LongImageActivity">
 
@@ -58,7 +66,7 @@
             android:value="${HONGRI_CHANNEL_VALUE}"/>
         -->
         <activity
-            android:name=".activity.ViewPagerActivity"
+            android:name=".activity.ViewPagerPhotosActivity"
             android:theme="@style/translucentTheme">
 
             <!--

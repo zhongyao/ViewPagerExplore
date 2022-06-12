@@ -5,11 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.support.annotation.Nullable;
-import android.support.annotation.XmlRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.hongri.viewpager.util.DeviceUtil;
 import com.hongri.viewpager.util.draw.HelpClip;

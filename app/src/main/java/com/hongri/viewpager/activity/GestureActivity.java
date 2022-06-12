@@ -2,7 +2,6 @@ package com.hongri.viewpager.activity;
 
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -11,6 +10,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.Logger;
 

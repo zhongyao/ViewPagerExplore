@@ -3,7 +3,7 @@ package com.hongri.viewpager.jsapi;
 import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
-import com.hongri.viewpager.activity.ViewPagerActivity;
+import com.hongri.viewpager.activity.ViewPagerPhotosActivity;
 
 /**
  * @author zhongyao
@@ -26,7 +26,7 @@ public class MyJavascriptInterface {
      */
     @JavascriptInterface
     public void openImage(String img) {
-        Intent intent = new Intent(mContext, ViewPagerActivity.class);
+        Intent intent = new Intent(mContext, ViewPagerPhotosActivity.class);
         intent.putExtra("imageUrls",mImageUrls);
         intent.putExtra("curImageUrl",img);
         mContext.startActivity(intent);

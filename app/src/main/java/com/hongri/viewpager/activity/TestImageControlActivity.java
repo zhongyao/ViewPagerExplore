@@ -6,11 +6,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.Logger;
 import com.hongri.viewpager.util.ToastUtil;

@@ -5,10 +5,10 @@ import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hongri.viewpager.R;
 import com.hongri.viewpager.util.BitmapUtil;

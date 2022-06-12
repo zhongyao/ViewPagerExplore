@@ -9,10 +9,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.hongri.viewpager.longimage.MoveGestureDetector;
 
 /**

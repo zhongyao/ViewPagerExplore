@@ -47,6 +47,16 @@
 #### 如果需要查看图片压缩相关的知识点，请查阅BitmapUtil工具类，这里做了详细的说明。
 
 <br></br>
-<br></br>
-<br></br>
 #### 可参考：https://github.com/davemorrissey/subsampling-scale-image-view
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+=================================================================================
+##以下是关于ViewPager的探索：
+### ViewPager使用可直接参考--ViewPagerActivity：
+#### 自定义高度自适应ViewPager【FlexibleViewPager】
+#### 自定义固定最大高度ViewPager【MaxHeightViewPager】
+
+### ViewPager2使用可直接参考--ViewPager2Activity【TODO】：

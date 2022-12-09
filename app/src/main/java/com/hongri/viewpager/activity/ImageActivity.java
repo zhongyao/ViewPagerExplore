@@ -9,6 +9,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -34,12 +35,12 @@ public class ImageActivity extends Activity {
 
         image_view = findViewById(R.id.image_view);
 
-        image_view.setImageResource(R.drawable.long_image);
+        image_view.setImageResource(R.drawable.avatar);
 
         /**
          * 使用BitmapRegionDecoder展示长图
          */
-        displayBigImage();
+//        displayBigImage();
 
         /**
          * ImageView相关ScaleType测试
@@ -49,7 +50,7 @@ public class ImageActivity extends Activity {
         /**
          * Bitmap & Drawable
          */
-        bitmapAndDrawable();
+//        bitmapAndDrawable();
     }
 
     private void displayBigImage() {
@@ -126,11 +127,15 @@ public class ImageActivity extends Activity {
         return bmp;
     }
 
+    /**
+     * 参考：https://www.jianshu.com/p/32e335d5b842
+     */
     private void imageScaleType() {
+        image_view.setVisibility(View.VISIBLE);
         /**
          * 1、以FIT开头的会使用缩放
          */
-        //默认 图片等比缩放到能够填充控件大小
+        //【默认】图片等比缩放到能够填充控件大小
         //image_view.setScaleType(ScaleType.FIT_CENTER);
         //图片等比缩放到能够填充控件大小，并放置在控件的上面或者左边展示
         //如果图片的宽大于高，则会在下半部分留白；如果图片的高度大于宽度，则会在右半部分留白。
